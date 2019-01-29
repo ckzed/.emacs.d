@@ -1,0 +1,8 @@
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/api" ":API:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/goprovision/" ":GP:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/zenbuild/" ":ZENIX:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/zedcloud/" ":CLOUD:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/samples/" ":SAMPLES:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/zcli/" ":ZCLI:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/cluster-configs/" ":CONFIGS:") t)
+(provide 'my-sandboxes)

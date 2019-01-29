@@ -1,0 +1,1 @@
+../src/goflymake/go-flycheck.el

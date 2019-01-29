@@ -1,0 +1,3 @@
+[submodule "src/goflymake"]
+	path = src/goflymake
+	url = https://github.com/dougm/goflymake
