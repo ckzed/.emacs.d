@@ -16,6 +16,7 @@
     diff-hl
     diminish
     dockerfile-mode
+    elpy
     exec-path-from-shell
     expand-region
     flycheck

@@ -288,14 +288,22 @@
 ;;;; (diminish function-args-mode "")
 
 ;; python
+(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
 (use-package python-mode
   :defer t
   :config
+  (elpy-enable)
+  ;; (elpy-mode)
   (autoload 'py-yapf "yapf" "Yet Another Python Formatter" t)
   (py-yapf-enable-on-save)
   (anaconda-mode)
+
   ;; (anaconda-eldoc-mode)
   :init
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq py-indent-offset tab-width)
+  (setq py-smart-indentation t)
   (setq python-shell-native-complete nil)
   (setq python-indent-offset 4))
 
@@ -399,7 +407,7 @@
   ;; (focus-mode +1)
   ;; (function-args-mode +1)
   ;; (highlight-symbol-mode +1)
-  (local-set-key (kbd "RET") 'newline-and-indent)
+  ;; (local-set-key (kbd "RET") 'newline-and-indent)
   (local-set-key (kbd "C-<backspace>") 'c-hungry-backspace)
   (prettify-symbols-mode +1)
   (rainbow-delimiters-mode +1)

@@ -16,6 +16,7 @@
  auto-revert-verbose nil
  auto-save-interval 0
  auto-save-timeout 600
+
  blink-matching-paren nil
  column-number-mode t
  confirm-kill-emacs 'y-or-n-p
@@ -34,6 +35,7 @@
  font-lock-maximum-decoration t
  gc-cons-threshold 50000000
  global-auto-revert-non-file-buffers t
+ global-auto-revert-mode t
  history-length 1000
  indent-tabs-mode nil
  inhibit-startup-message t

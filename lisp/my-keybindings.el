@@ -13,6 +13,7 @@
 (global-set-key (kbd "M-h") 'help-command)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-x C-b") 'electric-buffer-list)
 
 (global-set-key (kbd "<C-up>") 'shrink-window)
 (global-set-key (kbd "<C-down>") 'enlarge-window)

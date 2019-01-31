@@ -211,6 +211,7 @@
 (use-package smart-mode-line
   :init
   (setq sml/no-confirm-load-theme t)
+  (setq sml/name-width 30)
   :config
   (sml/setup)
   (sml/apply-theme 'respectful))
