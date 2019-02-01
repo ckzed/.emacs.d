@@ -32,7 +32,8 @@
       ;; smtpmail setting; disable if using sendmail
       smtpmail-stream-type 'starttls
       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587 "chirag@zededa.com" nil))
+      ;; smtpmail-auth-credentials '(("smtp.gmail.com" 587 "chirag@zededa.com" nil))
+      smtpmail-auth-credentials (expand-file-name "~/.authinfo")
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-user "chirag@zededa.com"

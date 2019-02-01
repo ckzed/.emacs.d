@@ -150,8 +150,31 @@
 (use-package magit
   :ensure t
   :bind
-  ("C-x g" . magit-status)
-  ("C-x p" . magit-blame))
+  (:prefix-map magit-prefix-map
+               :prefix "C-c g"
+               (("a" . magit-stage-file) ; the closest analog to git add
+                ("c" . magit-checkout)
+                ("C" . magit-branch-and-checkout)
+                ("d" . magit-diff)
+                ("D" . magit-discard)
+                ("f" . magit-fetch)
+                ("g" . vc-git-grep)
+                ("G" . magit-gitignore)
+                ("i" . magit-init)
+                ("l" . magit-log)
+                ("m" . magit)
+                ("M" . magit-merge)
+                ("n" . magit-notes-edit)
+                ("p" . magit-pull)
+                ("P" . magit-push)
+		("r" . magit-show-refs-head)
+                ("R" . magit-rebase)
+                ("s" . magit-status)
+                ("S" . magit-stash)
+                ("t" . magit-tag)
+                ("T" . magit-tag-delete)
+                ("u" . magit-unstage)
+                ("U" . magit-update-index))))
 
 ;; magithub
 (use-package magithub
