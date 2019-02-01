@@ -23,6 +23,6 @@
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
 
-(global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs")))
+(global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs.d/init.el")))
 
 (provide 'my-keybindings)

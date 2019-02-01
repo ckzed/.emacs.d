@@ -12,7 +12,36 @@
   :ensure t
   :bind
   ("C-c f" . org-toggle-todo-and-fold)
-
+  :init
+  (setq org-agenda-files (list (expand-file-name ".todo.org" my-home-dir))
+	org-refile-targets '(("~/.someday.org" :level . 1))
+        org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c)"))
+        org-todo-keyword-faces
+        '(("NEXT" :foreground "blue" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("HOLD" :foreground "magenta" :weight bold)
+          ("CANCELLED" :foreground "forest green" :weight bold))
+	; org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
+        ; org-log-done 'time
+        org-agenda-window-setup (quote current-window)
+        ; org-deadline-warning-days 7
+	org-agenda-span 'week
+        ; org-agenda-skip-scheduled-if-deadline-is-shown t
+        ; org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
+        ; org-agenda-todo-ignore-deadlines (quote all)
+        ; org-agenda-todo-ignore-scheduled (quote all)
+        ; org-agenda-sorting-strategy        (quote         ((agenda deadline-up priority-down)          (todo priority-down category-keep)          (tags priority-down category-keep)          (search category-keep)))
+        org-ellipsis "⤵"
+        org-M-RET-my-split-line nil
+        ;; Need to work on this
+	org-capture-templates '(("t" "Todo" entry
+				 (file+headline "~/.todo.org" "Tasks")
+				 "* TODO %i%?")
+				("T" "Tickler" entry
+				 (file+headline "~/.tickler.org" "Tickler")
+				 "* %i%? \n %U")))
   :config
   (defun jump-to-org-agenda ()
     (interactive)
@@ -105,64 +134,12 @@ Example:
              (org-todo "TODO")
              (hide-subtree))
             (t (message "Can only toggle between TODO and DONE.")))))
-
-
-
-  ;; Set up variables
-  (setq org-agenda-files (list (expand-file-name ".todo.org" my-home-dir))
-        org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-          (sequence "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c)"))
-        org-todo-keyword-faces
-        '(("NEXT" :foreground "blue" :weight bold)
-          ("WAITING" :foreground "orange" :weight bold)
-          ("HOLD" :foreground "magenta" :weight bold)
-          ("CANCELLED" :foreground "forest green" :weight bold))
-	org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
-
-        ;; Add a timestamp when a certain TODO item was finished.
-        org-log-done 'time
-
-        ;;open agenda in current window
-        org-agenda-window-setup (quote current-window)
-        ;;warn me of any deadlines in next 7 days
-        org-deadline-warning-days 7
-        ;;show me tasks scheduled or due in next fortnight
-        ;; org-agenda-span (quote fortnight)
-	org-agenda-span 'day
-        ;;don't show tasks as scheduled if they are already shown as a deadline
-        org-agenda-skip-scheduled-if-deadline-is-shown t
-        ;;don't give awarning colour to tasks with impending deadlines
-        ;;if they are scheduled to be done
-        org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
-        ;;don't show tasks that are scheduled or have deadlines in the
-        ;;normal todo list
-        org-agenda-todo-ignore-deadlines (quote all)
-        org-agenda-todo-ignore-scheduled (quote all)
-        ;;sort tasks in order of when they are due and then by priority
-        org-agenda-sorting-strategy
-        (quote
-         ((agenda deadline-up priority-down)
-          (todo priority-down category-keep)
-          (tags priority-down category-keep)
-          (search category-keep)))
-
-        ;; Custom timestamp formats.
-        ;; org-display-custom-times t
-        ;; org-time-stamp-custom-formats '("<%d-%m-%Y %a>" . "<%d-%m-%Y %a %H:%M>")
-        org-ellipsis "⤵"
-        org-M-RET-my-split-line nil)
-
-  ;; templates
-  (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline (expand-file-name ".todo.org" my-home-directory)))
-          "* TODO %?\n  %i\n  %a"))
   (add-hook 'org-mode-hook
-            (lambda ()
-              (flycheck-mode)
+	    (lambda ()
+	      (flycheck-mode)
 	      (flyspell-mode)
 	      (writegood-mode)
-              (add-hook 'before-save-hook 'org-align-all-tags nil t))))
+	      (add-hook 'before-save-hook 'org-align-all-tags nil t))))
 
 ;; org-bullets
 (use-package org-bullets
@@ -172,7 +149,7 @@ Example:
   (defun org-bullets-mode-hook ()
     (setq org-bullets-bullet-list '("◉" "◎" "⚫" "○" "►" "◇"))
     (org-bullets-mode +1))
-  :init
+  :config
   (add-hook 'org-mode-hook #'org-bullets-mode-hook))
 
 ;; start org-mode upon start

@@ -232,7 +232,7 @@
    `(notmuch-tree-match-tag-face ((,class (:foreground ,green :weight bold))))
    `(notmuch-widget-face ((,class (:foreground ,orange :weight bold))))
    `(org-agenda-date ((,class (:foreground ,var))))
-   `(org-agenda-date-today ((,class (:weight bold :foreground ,purple :height 1.4))))
+   `(org-agenda-date-today ((,class (:weight bold :foreground ,purple))))
    `(org-agenda-date-weekend ((,class (:weight normal :foreground ,fg4))))
    `(org-agenda-done ((,class (:foreground ,bg4))))
    `(org-agenda-structure ((,class (:weight bold :foreground ,fg3 :box (:color ,fg4) :background ,bg3))))
