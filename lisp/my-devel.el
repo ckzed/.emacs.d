@@ -167,7 +167,7 @@
                 ("n" . magit-notes-edit)
                 ("p" . magit-pull)
                 ("P" . magit-push)
-		("r" . magit-show-refs-head)
+                ("r" . magit-show-refs-head)
                 ("R" . magit-rebase)
                 ("s" . magit-status)
                 ("S" . magit-stash)
