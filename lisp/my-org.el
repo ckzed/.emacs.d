@@ -139,6 +139,7 @@ Example:
 	      (flycheck-mode)
 	      (flyspell-mode)
 	      (writegood-mode)
+	      (org-bullets-mode-hook)
 	      (add-hook 'before-save-hook 'org-align-all-tags nil t))))
 
 ;; org-bullets
@@ -148,9 +149,7 @@ Example:
   :preface
   (defun org-bullets-mode-hook ()
     (setq org-bullets-bullet-list '("◉" "◎" "⚫" "○" "►" "◇"))
-    (org-bullets-mode +1))
-  :config
-  (add-hook 'org-mode-hook #'org-bullets-mode-hook))
+    (org-bullets-mode +1)))
 
 ;; start org-mode upon start
 (org-agenda nil "a")
