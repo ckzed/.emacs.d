@@ -1,14 +1,14 @@
+;;; package -- Summary
+;;; Commentary:
+
 ;;; -*-Emacs-Lisp-*-
+
+;;; Code:
 
 ;; offlineimap
 (use-package offlineimap
   :config
   (offlineimap))
-
-;; funny stuff
-(autoload 'sm-add-random-header "silly-mail" nil t)
-;; (add-hook 'mail-setup-hook 'sm-add-random-header)
-(setq sm-add-ramdom-header-to-mail t)
 
 ;; write good
 (add-hook 'message-mode-hook '(lambda()
@@ -47,7 +47,15 @@
       message-sendmail-f-is-evil t
       mail-envelope-from 'header
       mail-specify-envelope-from 'header
-      message-sendmail-envelope-from 'header)
+      message-sendmail-envelope-from 'header
+
+      ;; this validates the cert, I have no idea why it's nil by default
+      gnutls-verify-error t
+      ;; probably too high for general usage,
+      ;; but have no effect in the tests regardless
+      gnutls-min-prime-bits 2048
+      network-security-level 'high
+      nsm-save-host-names t)
 
 ;; notmuch config
 (require 'notmuch-config)

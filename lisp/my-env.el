@@ -36,7 +36,6 @@
   (global-set-key (kbd "C-x C-r") 'counsel-recentf))
   ;; (global-set-key (kbd "C-x C-r") 'ivy-recentf))
 
-;;; Tool
 (use-package smex
   :bind
   (("M-x" . smex)
@@ -45,7 +44,6 @@
   (setq smex-save-file (expand-file-name "smex-items" my-tmp-dir))
   :config
   (smex-initialize))
-
 (use-package avy
   :bind
   ("C-." . avy-goto-char)
@@ -267,5 +265,10 @@
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
+
+;; discover
+(use-package discover
+  :config
+  (global-discover-mode +1))
 
 (provide 'my-env)

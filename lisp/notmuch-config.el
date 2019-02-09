@@ -1,5 +1,8 @@
+;;; package --- Summary
+;;; Commentary:
 ;;; -*-Emacs-Lisp-*-
 
+;;; Code:
 ;; not much config comes here
 (use-package notmuch
   :defer t

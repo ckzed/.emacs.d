@@ -1,7 +1,11 @@
+;;; package --- Summary
+
+;;; Commentary:
 ;; Org setup
 
+;;; Code:
 (defvar my-status-dir (expand-file-name "~/Documents/org")
-  "Directory where I store my status reports")
+  "Directory where I store my status reports.")
 
 (global-set-key (kbd "C-c t") (lambda() (interactive)(find-file (expand-file-name ".todo.org" my-home-dir))))
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -24,7 +28,7 @@
           ("HOLD" :foreground "magenta" :weight bold)
           ("CANCELLED" :foreground "forest green" :weight bold))
 	; org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
-        ; org-log-done 'time
+					; org-log-done 'time
         org-agenda-window-setup (quote current-window)
         ; org-deadline-warning-days 7
 	org-agenda-span 'week

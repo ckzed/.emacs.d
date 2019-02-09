@@ -15,6 +15,7 @@
     dabbrev
     diff-hl
     diminish
+    discover
     dockerfile-mode
     elpy
     exec-path-from-shell

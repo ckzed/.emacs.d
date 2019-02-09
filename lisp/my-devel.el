@@ -80,16 +80,18 @@
 ;;;;  (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
 ;;;;  (global-set-key (kbd "C-x v SPC") 'git-gutter:mark-hunk)
 ;;;;  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk))
-;;
-;;(use-package rainbow-delimiters
-;;  :defer t
-;;  :diminish rainbow-delimiters-mode)
+
+(use-package rainbow-delimiters
+  :defer t
+  :diminish rainbow-delimiters-mode)
 
 ;; syntax check
 (use-package flycheck
   :diminish flycheck-mode
   :config
-  (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point))
+  (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point)
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
 ;;;; function-args
 ;;;;(use-package function-args
@@ -138,7 +140,7 @@
   (setq projectile-use-git-grep t)
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-global-mode t))
+  (projectile-mode t))
 
 ;;; git
 (use-package git
@@ -155,23 +157,23 @@
                (("a" . magit-stage-file) ; the closest analog to git add
                 ("c" . magit-checkout)
                 ("C" . magit-branch-and-checkout)
-                ("d" . magit-diff)
+                ("d" . magit-diff-range)
                 ("D" . magit-discard)
-                ("f" . magit-fetch)
+                ("f" . magit-fetch-other)
                 ("g" . vc-git-grep)
-                ("G" . magit-gitignore)
+                ("G" . magit-gitignore-globally)
                 ("i" . magit-init)
-                ("l" . magit-log)
-                ("m" . magit)
-                ("M" . magit-merge)
+                ("l" . magit-log-other)
+                ("m" . magit-merge-plain)
+                ("M" . magit)
                 ("n" . magit-notes-edit)
-                ("p" . magit-pull)
-                ("P" . magit-push)
+                ("p" . magit-pull-branch)
+                ("P" . magit-push-other)
                 ("r" . magit-show-refs-head)
-                ("R" . magit-rebase)
+                ("R" . magit-rebase-branch)
                 ("s" . magit-status)
-                ("S" . magit-stash)
-                ("t" . magit-tag)
+                ("S" . magit-stash-both)
+                ("t" . magit-tag-create)
                 ("T" . magit-tag-delete)
                 ("u" . magit-unstage)
                 ("U" . magit-update-index))))
@@ -316,10 +318,13 @@
   :defer t
   :config
   (elpy-enable)
-  ;; (elpy-mode)
   (autoload 'py-yapf "yapf" "Yet Another Python Formatter" t)
-  (py-yapf-enable-on-save)
+  ;; (py-yapf-enable-on-save)
   (anaconda-mode)
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    (add-hook 'elpy-mode-hook 'flycheck-mode)
+    (add-hook 'elpy-mode-hook 'py-yapf-enable-on-save))
 
   ;; (anaconda-eldoc-mode)
   :init

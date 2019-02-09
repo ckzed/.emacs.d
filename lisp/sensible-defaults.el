@@ -36,7 +36,7 @@
  font-lock-maximum-decoration t
  gc-cons-threshold 50000000
  global-auto-revert-non-file-buffers t
- global-auto-revert-mode t
+ global-auto-revert-mode 1
  history-length 1000
  indent-tabs-mode nil
  inhibit-startup-message t
@@ -49,6 +49,7 @@
  mac-command-modifier 'meta
  make-backup-files nil
  mouse-drag-copy-region t
+ mouse-highlight nil
  next-error-highlight t
  next-error-highlight-no-select t
  next-line-add-newlines nil
