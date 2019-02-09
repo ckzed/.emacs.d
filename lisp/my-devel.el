@@ -323,8 +323,8 @@
   (anaconda-mode)
   (when (require 'flycheck nil t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode)
-    (add-hook 'elpy-mode-hook 'py-yapf-enable-on-save))
+    ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
+    (add-hook 'elpy-mode-hook 'flycheck-mode))
 
   ;; (anaconda-eldoc-mode)
   :init
