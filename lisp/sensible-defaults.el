@@ -21,7 +21,6 @@
  column-number-mode t
  confirm-kill-emacs 'y-or-n-p
  confirm-nonexistent-file-or-buffer nil
- debug-on-error t
  delete-by-moving-to-trash nil
  delete-selection-mode t
  diary-file "~/.diary"
