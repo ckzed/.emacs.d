@@ -10,6 +10,7 @@
     better-defaults
     bind-key
     company
+    company-emoji
     company-go
     counsel
     dabbrev
@@ -43,6 +44,8 @@
     magithub
     magit-gh-pulls
     markdown-mode
+    multi-term
+    mustache-mode
     notmuch
     nyan-mode
     offlineimap

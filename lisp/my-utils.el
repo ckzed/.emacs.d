@@ -1,5 +1,9 @@
+;;; package -- Summary
+
+;;; Commentary:
 ;; Utility functions
 
+;;; Code:
 ;; functions (probably these need to go into different file?)
 (defun file-reopen-as-root ()
   (interactive)
@@ -43,23 +47,6 @@ Modified 2002/02/26.C.16:26 from \"files.el\""
 
 (global-set-key (kbd "C-x 2") 'vsplit-last-buffer)
 (global-set-key (kbd "C-x 3") 'hsplit-last-buffer)
-
-
-;; I want an easy command for opening new shells:
-(defun new-shell (name)
-  "Opens a new shell buffer with the given name in
-    asterisks (*name*) in the current directory and changes the
-    prompt to 'name>'."
-  (interactive "sName: ")
-  (pop-to-buffer (concat "*" name "*"))
-  (unless (eq major-mode 'shell-mode)
-    (ansi-term (current-buffer))
-    (sleep-for 0 200)
-    (delete-region (point-min) (point-max))
-    (comint-simple-send (get-buffer-process (current-buffer))
-                        (concat "export PS1=\"\033[33m" name "\033[0m:\033[35m\\W\033[0m>\""))))
-(global-set-key (kbd "C-c C-s") 'new-shell)
-
 
 (defun contextual-backspace ()
   "Hungry whitespace or delete word depending on context."

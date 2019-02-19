@@ -1,5 +1,9 @@
+;;; package -- Summary
+
+;;; Commentary:
 ;; Key bindings
 
+;;; Code:
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "M-?") 'mark-paragraph)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -22,7 +26,9 @@
 
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c s") 'multi-term)
 
 (global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs.d/init.el")))
 
 (provide 'my-keybindings)
+;;; my-keybindings ends here

@@ -1,4 +1,9 @@
+;;; package -- Summary
+
+;;; Commentary:
 ;; Remove those GUI elements
+
+;;; Code:
 (tooltip-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -69,6 +74,7 @@
  transient-mark-mode t
  truncate-lines t
  truncate-partial-width-windows nil
+ type-break-mode t
  visible-bell t
  x-select-enable-clipboard t)
 
@@ -93,3 +99,4 @@
 (rainbow-mode +1)
 
 (provide 'sensible-defaults)
+;;; sensible-defaults ends here
