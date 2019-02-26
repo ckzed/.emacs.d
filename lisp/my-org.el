@@ -30,7 +30,9 @@
 	; org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
 					; org-log-done 'time
         org-agenda-window-setup (quote current-window)
-        ; org-deadline-warning-days 7
+					; org-deadline-warning-days 7
+	org-agenda-start-day "-1d"	; start from yesterday
+	org-agenda-start-on-weekday nil
 	org-agenda-span 'week
         ; org-agenda-skip-scheduled-if-deadline-is-shown t
         ; org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
@@ -43,6 +45,8 @@
 	org-capture-templates '(("t" "Todo" entry
 				 (file+headline "~/.todo.org" "Tasks")
 				 "* TODO %i%?")
+				("b" "Bugs" entry
+				 (file+headline "~/.bugs.org" "Bugs"))
 				("T" "Tickler" entry
 				 (file+headline "~/.tickler.org" "Tickler")
 				 "* %i%? \n %U")))

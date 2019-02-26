@@ -74,6 +74,7 @@
  transient-mark-mode t
  truncate-lines t
  truncate-partial-width-windows nil
+ type-break-interval 600
  type-break-mode t
  visible-bell t
  x-select-enable-clipboard t)

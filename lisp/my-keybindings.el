@@ -26,7 +26,7 @@
 
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c s") 'multi-term)
+(global-set-key (kbd "C-c M-m") 'multi-term)
 
 (global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs.d/init.el")))
 
