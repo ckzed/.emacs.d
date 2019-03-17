@@ -1,4 +1,5 @@
 (use-package xcscope
+  :defer 10
   :config
   (setq cscope-option-do-not-update-database t)
   (setq cscope-close-window-after-select t)
@@ -8,6 +9,7 @@
 
 ;; highlight uncommitted changes
 (use-package diff-hl
+  :defer 10
   :ensure t
   :bind
   ("C-c r" . diff-hl-revert-hunk)
@@ -20,11 +22,13 @@
 
 ;; highlight todos
 (use-package hl-todo
+  :defer 10
   :config
   (global-hl-todo-mode))
 
 ;; make the whitespace standout
 (use-package whitespace
+  :defer 10
   :init
   (setq whitespace-line-column 80) ;; limit line length
   (setq whitespace-style '(face empty tabs lines-tail trailing))
@@ -32,6 +36,7 @@
 
 ;;;; make the whitespace cleanup as default
 (use-package whitespace-cleanup-mode
+  :defer 10
   :config
   (global-whitespace-cleanup-mode)
   :diminish whitespace-cleanup-mode)
@@ -43,6 +48,7 @@
 
 ;; highlight the changes to the buffer
 (use-package volatile-highlights
+  :defer 10
   :diminish volatile-highlights-mode)
 
 ;;;; Draw a tail in the trail of typed characters
@@ -82,12 +88,13 @@
 ;;;;  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk))
 
 (use-package rainbow-delimiters
-  :defer t
+  :defer 10
   :diminish rainbow-delimiters-mode)
 
 ;; syntax check
 (use-package flycheck
   :diminish flycheck-mode
+  :defer 10
   :config
   (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point)
   (add-hook 'after-init-hook 'global-flycheck-mode)
@@ -107,6 +114,7 @@
 
 (use-package smartparens
   :diminish smartparens-mode
+  :defer 10
   :commands
   smartparens-strict-mode
   smartparens-mode
@@ -132,6 +140,7 @@
 ;;;; Projectile
 (use-package projectile
   :ensure t
+  :defer 10
   :diminish projectile-mode
   :init
   (setq projectile-completion-system 'ivy)
@@ -144,17 +153,18 @@
 
 ;;; git
 (use-package git
-  :defer t
+  :defer 10
   :bind
   ("<f9>"  . git-blame-mode))
 
 ;; magit
 (use-package magit
   :ensure t
+  :defer 10
   :bind
   (:prefix-map magit-prefix-map
                :prefix "C-c g"
-               (("a" . magit-stage-file) ; the closest analog to git add
+               (("a" . magit-stage-file)
                 ("c" . magit-checkout)
                 ("C" . magit-branch-and-checkout)
                 ("d" . magit-diff-range)
@@ -176,23 +186,25 @@
                 ("t" . magit-tag-create)
                 ("T" . magit-tag-delete)
                 ("u" . magit-unstage)
-                ("U" . magit-update-index))))
+                ("U" . magit-stash-pop))))
 
 ;; magithub
 (use-package magithub
+  :defer 10
   :after magit
   :config
   (magithub-feature-autoinject t))
 
 ;; magit-gh-pulls
 (use-package magit-gh-pulls
+  :defer 10
   :after magit
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 ;;; last change
 (use-package goto-last-change
-  :defer t
+  :defer 10
   :bind
   ("C-x ," . goto-last-change))
 
@@ -313,9 +325,11 @@
 ;;;; (diminish function-args-mode "")
 
 ;; python
-(add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
-(use-package python-mode
-  :defer t
+;; (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+(use-package python
+  :bind (("M-[" . python-nav-backward-block)
+         ("M-]" . python-nav-forward-block))
+  :defer 10
   :config
   (elpy-enable)
   (autoload 'py-yapf "yapf" "Yet Another Python Formatter" t)
@@ -365,13 +379,9 @@
 
 ;; go lang
 (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
-(require 'go-guru)
-(use-package go-flymake
-  :diminish flymake-mode)
-(require 'go-flycheck)
-(require 'company-go)
 (use-package go-mode
   :ensure t
+  :defer 10
   :init
   (setq gofmt-command "goimports")
   (setq c-basic-offset 8)
@@ -387,6 +397,10 @@
   ("C-c i" . go-goto-imports)
   ;;  ("M-/" . company-go)
   :config
+  (require 'go-guru)
+  (require 'go-flymake)
+  (require 'go-flycheck)
+  (require 'company-go)
   (go-guru-hl-identifier-mode)
   (go-eldoc-setup))
 
@@ -396,12 +410,14 @@
 
 ;; eldoc
 (use-package eldoc
+  :defer 10
   :ensure nil
   :diminish eldoc-mode
   :commands eldoc-mode)
 
 ;; protobuf
 (use-package protobuf-mode
+  :defer 10
    :config
    (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
    :init
@@ -418,8 +434,19 @@
 
 ;; dockerfile
 (use-package dockerfile-mode
+  :defer 10
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
+
+;; json
+(use-package json-mode
+  :defer 10
+  :mode "\\.json\\'"
+  :hook (before-save . my/json-mode-before-save-hook)
+  :preface
+  (defun my/json-mode-before-save-hook ()
+    (when (eq major-mode 'json-mode)
+      (json-pretty-print-buffer))))
 
 ;; hook for all programming mode
 (defun my-common-prog-settings()
@@ -468,8 +495,8 @@
 
 (mapc (lambda(mode-hook)
        (add-hook mode-hook 'my-common-prog-settings))
-     '(c-mode-common-hook python-mode-hook js3-mode-hook
-     java-mode-hook sh-mode-hook go-mode-hook json-mode-hook))
+      '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
+			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode))
 
 (require 'my-sandboxes)
 
@@ -477,4 +504,6 @@
 ;;;; (require 'magit-gh-pulls)
 ;;;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 ;;
+
 (provide 'my-devel)
+;;; my-devel.el ends here

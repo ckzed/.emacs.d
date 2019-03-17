@@ -1,4 +1,11 @@
+;;; package -- Summary
+
+;;; Commentary:
+
+;;; Code:
+
 (use-package recentf
+  :defer 5
   :init
   (setq recentf-save-file (expand-file-name "recentf" my-tmp-dir))
   (setq recentf-max-menu-items 50)
@@ -11,6 +18,7 @@
   (recentf-mode +1))
 
 (use-package session
+  :defer 5
   :init
   (setq session-initialize '(de-saveplace session keys menus places)
         session-globals-include '((kill-ring 50)
@@ -26,6 +34,7 @@
 
 (use-package counsel)
 (use-package ivy
+  :defer 5
   :diminish ivy-mode
   :after counsel
   :init
@@ -37,6 +46,7 @@
   ;; (global-set-key (kbd "C-x C-r") 'ivy-recentf))
 
 (use-package smex
+  :defer 5
   :bind
   (("M-x" . smex)
    ("M-X" . smex-major-mode-commands))
@@ -44,7 +54,9 @@
   (setq smex-save-file (expand-file-name "smex-items" my-tmp-dir))
   :config
   (smex-initialize))
+
 (use-package avy
+  :defer 5
   :bind
   ("C-." . avy-goto-char)
   ("M-s" . avy-goto-word-1)
@@ -66,12 +78,14 @@
 ;;         highlight-tail-posterior-type 'const))
 
 (use-package hl-line
+  :defer 5
   :config
   (set-face-background 'hl-line "#3e4446")
   (set-face-background 'highlight nil)
   (global-hl-line-mode +1))
 
 (use-package win-switch
+  :defer 5
   :bind
   ("C-x o" . win-switch-dispatch)
   :config
@@ -83,6 +97,7 @@
   (win-switch-set-keys '("p") 'previous-window))
 
 (use-package expand-region
+  :defer 5
   :bind
   ("C-=" . er/expand-region))
 
@@ -115,13 +130,16 @@
   :defer 5
   :config
   (global-set-key (kbd "C-s") 'swiper)
+  (define-key swiper-map (kbd "C-.")
+    (lambda () (interactive) (insert (format "\\<%s\\>" (with-ivy-window (thing-at-point 'symbol))))))
+  (define-key swiper-map (kbd "M-.")
+    (lambda () (interactive) (insert (format "\\<%s\\>" (with-ivy-window (thing-at-point 'word))))))
   :init
   (setq ivy-display-style 'fancy)
   ;;advise swiper to recenter on exit
   (defun swiper-recenter (&rest args)
     "recenter display after swiper"
-    (recenter)
-    )
+    (recenter))
   (defadvice swiper-recenter (after swiper)))
 
 ;; beacon
@@ -138,13 +156,14 @@
 ;; flyspell
 (use-package flyspell
   :diminish flyspell-mode
-  :defer t
+  :defer 5
   :init
   (flyspell-mode))
 
 ;; spell check
 (use-package flyspell-correct-ivy
   :ensure t
+  :defer 5
   :after flyspell
   :init
   (add-hook 'text-mode-hook
@@ -163,13 +182,17 @@
 ;;; Auto complete (company -> COMPlete ANYthing)
 (use-package company
   :ensure t
+  :defer 5
   :diminish company-mode
   :commands company-mode
   :init
-  (setq company-dabbrev-ignore-case nil
+  (setq company-begin-commands '(self-insert-command)
+        company-dabbrev-ignore-case nil
         company-dabbrev-code-ignore-case nil
         company-dabbrev-downcase nil
-        company-idle-delay 3
+        company-idle-delay 1
+        company-show-numbers t
+        company-tooltip-align-annotations 't
         company-minimum-prefix-length 2)
   :config
   (global-company-mode)
@@ -198,6 +221,7 @@
 
 ;; savehist
 (use-package savehist
+  :defer 5
   :init
   (setq savehist-file (expand-file-name "savehist" my-tmp-dir)
         history-length 10000
@@ -216,7 +240,7 @@
 
 ;; Take a break
 (use-package type-break
-  :defer t
+  :defer 5
   :bind
   ("<f12>" . type-break)
   :config
@@ -230,45 +254,138 @@
 
 ;; ibuffer
 (use-package ibuffer
-  :defer t
+  :defer 5
   :config
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (autoload 'ibuffer "ibuffer" "List buffers." t))
 
+;; ibuffer-projectile
+(use-package ibuffer-projectile
+  :defer 5
+  :after ibuffer
+  :preface
+  (defun my/ibuffer-projectile ()
+    (ibuffer-projectile-set-filter-groups)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic)))
+  :hook (ibuffer . my/ibuffer-projectile))
+
 ;; write good
 (use-package writegood-mode
-  :defer t
+  :defer 5
   :diminish writegood-mode
   :config
   (writegood-mode))
 
 ;; nyan-mode
 (use-package nyan-mode
+  :defer 5
   :ensure t
   :config
   (nyan-mode))
 
 ;; xkcd
 (use-package xkcd
-  :defer t
+  :defer 5
   :config
   (global-set-key (kbd "C-c C-r") 'xkcd-rand))
 
 ;; popup-imenu
 (use-package popup-imenu
+  :defer 5
   :commands popup-imenu
   :bind
   ("M-i" . popup-imenu))
 
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
+  :defer 5
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 ;; discover
 (use-package discover
+  :defer 5
   :config
   (global-discover-mode +1))
 
+(use-package dired
+  :ensure nil
+  :defer 5
+  :custom
+  (dired-auto-revert-buffer t)
+  (dired-dwim-target t)
+  (dired-hide-details-hide-symlink-targets nil)
+  (dired-listing-switches "-alh")
+  (dired-ls-F-marks-symlinks nil)
+  (dired-recursive-copies 'always))
+
+;; engine
+(use-package engine-mode
+  :defer 5
+  :init
+  (setq engine/browser-function 'eww-browse-url)
+  :config
+  (engine/set-keymap-prefix (kbd "C-c s"))
+  (defengine amazon
+    "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
+    :keybinding "a")
+
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "g")
+
+  (defengine google-images
+    "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
+    :keybinding "i")
+
+  (defengine google-maps
+    "http://maps.google.com/maps?q=%s"
+    :keybinding "m"
+    :docstring "Mappin' it up.")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
+  (defengine youtube
+    "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+    :keybinding "y")
+
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+    :keybinding "w"
+    :docstring "Searchin' the wikis.")
+  (engine-mode t))
+
+;; dashboard
+(use-package dashboard
+  :preface
+  (defun my/dashboard-banner ()
+    "Set a dashboard banner including information on package initialization
+     time and garbage collections."
+    (setq dashboard-banner-logo-title
+          (format "Emacs ready in %.2f seconds with %d garbage collections."
+                  (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
+  :init
+  ;; (setq dashboard-startup-banner nil)
+  (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+  (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
+  :custom
+  (dashboard-startup-banner 'logo)
+  :config
+  (dashboard-setup-startup-hook))
+
+;; emojis :+1:
+(use-package emojify
+  :defer 10
+  :config
+  (global-emojify-mode))
+
 (provide 'my-env)
+;;; my-env.el ends here

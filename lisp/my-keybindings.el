@@ -28,6 +28,8 @@
 (global-set-key (kbd "C-c C-m") 'execute-extended-command)
 (global-set-key (kbd "C-c M-m") 'multi-term)
 
+(global-set-key (kbd "C-z") 'bury-buffer)
+
 (global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs.d/init.el")))
 
 (provide 'my-keybindings)

@@ -13,6 +13,7 @@
 
 ;; Org
 (use-package org
+  :defer 5
   :ensure t
   :bind
   ("C-c f" . org-toggle-todo-and-fold)
@@ -152,7 +153,7 @@ Example:
 
 ;; org-bullets
 (use-package org-bullets
-  :defer t
+  :defer 5
   :commands org-bullets-mode
   :preface
   (defun org-bullets-mode-hook ()
@@ -160,7 +161,7 @@ Example:
     (org-bullets-mode +1)))
 
 ;; start org-mode upon start
-(org-agenda nil "a")
+;; (org-agenda nil "a")
 
 ;; idle-org-agenda
 ;; (use-package idle-org-agenda

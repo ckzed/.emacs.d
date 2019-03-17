@@ -14,11 +14,14 @@
     company-go
     counsel
     dabbrev
+    dashboard
     diff-hl
     diminish
     discover
     dockerfile-mode
     elpy
+    emojify
+    engine-mode
     exec-path-from-shell
     expand-region
     flycheck
@@ -37,6 +40,7 @@
     hl-line
     hl-todo
     ibuffer
+    ibuffer-projectile
     ivy
     js3-mode
     json-mode
@@ -55,7 +59,6 @@
     protobuf-mode
     py-yapf
     python
-    python-mode
     rainbow-delimiters
     rainbow-mode
     recentf
@@ -88,11 +91,18 @@
 	;; ("marmalade" . "https://marmalade-repo.org/packages/")
 	("org" . "http://orgmode.org/elpa/")))
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(use-package use-package-ensure-system-package :ensure t)
+
+;; (package-initialize)
+;; (unless package-archive-contents
+;;   (package-refresh-contents))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
 
 (provide 'install-packages)
+;;; install-packages.el ends here

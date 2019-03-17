@@ -26,11 +26,12 @@
  column-number-mode t
  confirm-kill-emacs 'y-or-n-p
  confirm-nonexistent-file-or-buffer nil
+ cursor-in-non-selected-windows nil
  delete-by-moving-to-trash nil
  delete-selection-mode t
  diary-file "~/.diary"
  dired-dwim-target t
- display-time-load-average-threshold 100
+ display-time-default-load-average nil
  display-time-format "%a %m/%d %H:%M "
  echo-keystrokes 0.02
  ediff-split-window-function 'split-window-horizontally
@@ -65,8 +66,10 @@
  scroll-conservatively 100000
  scroll-margin 3
  scroll-preserve-screen-position 1
+ select-enable-clipboard t
  sentence-end-double-space nil
  shift-select-mode nil
+ use-package-always-ensure t
  use-package-verbose t
  use-dialog-box nil
  tab-always-indent 'complete
