@@ -7,6 +7,7 @@
 
 ;; offlineimap
 (use-package offlineimap
+  :defer 10
   :config
   (offlineimap))
 

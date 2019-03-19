@@ -7,8 +7,9 @@
 (use-package recentf
   :defer 5
   :init
-  (setq recentf-save-file (expand-file-name "recentf" my-tmp-dir))
-  (setq recentf-max-menu-items 50)
+  (setq recentf-save-file (expand-file-name "recentf" my-tmp-dir)
+	recentf-max-menu-items 50
+	recentf-max-saved-items 200)
   :config
   (add-to-list 'recentf-exclude (expand-file-name ".*" my-tmp-dir))
   (add-to-list 'recentf-exclude (expand-file-name ".*" org-directory))
@@ -32,18 +33,41 @@
   :config
   (add-hook 'after-init-hook 'session-initialize))
 
-(use-package counsel)
+(use-package counsel
+  :diminish counsel-mode
+  :defer 5
+  :bind
+  (("C-x C-d" . counsel-dired-jump)
+   ("C-x C-h" . counsel-minibuffer-history)
+   ("C-x C-l" . counsel-find-library)
+   ("C-x C-f" . counsel-find-file)
+   ("C-x C-r" . counsel-recentf)
+   ("C-x C-u" . counsel-unicode-char)
+   ("C-x C-v" . counsel-set-variable))
+  :config
+  (counsel-mode))
+
 (use-package ivy
   :defer 5
   :diminish ivy-mode
+  :bind
+  (("C-x b" . ivy-switch-buffer)
+   ("C-x B" . ivy-switch-buffer-other-window)
+   ("M-H" . ivy-resume)
+   :map ivy-minibuffer-map
+   ("<tab>" . ivy-alt-done)
+   ("C-i" . ivy-partial-or-done)
+   :map ivy-switch-buffer-map
+   ("C-k" . ivy-switch-buffer-kill))
   :after counsel
   :init
-  (setq ivy-use-virtual-buffers t)
+  (setq ivy-use-virtual-buffers t
+        ivy-display-style 'fancy
+        ivy-case-fold-search-default t
+        ivy-count-format "(%d/%d) "
+        ivy-re-builders-alist '((t . ivy--regex-plus)))
   :config
-  (ivy-mode 1)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "C-x C-r") 'counsel-recentf))
-  ;; (global-set-key (kbd "C-x C-r") 'ivy-recentf))
+  (ivy-mode))
 
 (use-package smex
   :defer 5
@@ -84,17 +108,9 @@
   (set-face-background 'highlight nil)
   (global-hl-line-mode +1))
 
-(use-package win-switch
-  :defer 5
-  :bind
-  ("C-x o" . win-switch-dispatch)
-  :config
-  (setq win-switch-feedback-background-color "#6c96af")
-  (setq win-switch-feedback-foreground-color "#000000")
-  (setq win-switch-window-threshold 1)
-  (setq win-switch-idle-time 0.7)
-  (win-switch-set-keys '("o") 'next-window)
-  (win-switch-set-keys '("p") 'previous-window))
+(use-package switch-window
+  :bind (("C-x o" . switch-window)
+         ("C-x w" . switch-window-then-swap-buffer)))
 
 (use-package expand-region
   :defer 5
@@ -127,15 +143,19 @@
 ;; swiper
 (use-package swiper
   :ensure t
+  :bind
+  (("C-s" . swiper)
+   ("C-r" . swiper)
+   :map swiper-map
+   ("M-%" . swiper-query-replace))
   :defer 5
   :config
-  (global-set-key (kbd "C-s") 'swiper)
   (define-key swiper-map (kbd "C-.")
     (lambda () (interactive) (insert (format "\\<%s\\>" (with-ivy-window (thing-at-point 'symbol))))))
   (define-key swiper-map (kbd "M-.")
     (lambda () (interactive) (insert (format "\\<%s\\>" (with-ivy-window (thing-at-point 'word))))))
   :init
-  (setq ivy-display-style 'fancy)
+
   ;;advise swiper to recenter on exit
   (defun swiper-recenter (&rest args)
     "recenter display after swiper"
@@ -146,12 +166,24 @@
 (use-package beacon
   :defer 5
   :diminish beacon-mode
-  :config
-  (setq beacon-push-mark 35)
-  ;; (setq beacon-color "#666600")
-  (setq beacon-color "#cccc00")
   :init
-  (beacon-mode))
+  (setq beacon-push-mark 35
+	beacon-color "#cccc00"
+	beacon-blink-when-point-moves-vertically nil ; default nil
+	beacon-blink-when-point-moves-horizontally nil ; default nil
+	beacon-blink-when-buffer-changes t ; default t
+	beacon-blink-when-window-scrolls t ; default t
+	beacon-blink-when-window-changes t ; default t
+	beacon-blink-when-focused nil ; default nil
+
+	beacon-blink-duration 0.3 ; default 0.3
+	beacon-blink-delay 0.3 ; default 0.3
+	beacon-size 20 ; default 40
+	;; (setq beacon-color "yellow") ; default 0.5
+	beacon-color 0.5) ; default 0.5
+  :config
+  (add-to-list 'beacon-dont-blink-major-modes 'term-mode)
+  (beacon-mode +1))
 
 ;; flyspell
 (use-package flyspell
@@ -164,8 +196,9 @@
 (use-package flyspell-correct-ivy
   :ensure t
   :defer 5
-  :after flyspell
+  :after (flyspell ivy)
   :init
+  (setq flyspell-correct-interface #'flyspell-correct-ivy)
   (add-hook 'text-mode-hook
             (lambda()
               (flyspell-mode)
@@ -225,7 +258,9 @@
   :init
   (setq savehist-file (expand-file-name "savehist" my-tmp-dir)
         history-length 10000
-        history-delete-duplicates t)
+        history-delete-duplicates t
+        savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
+        savehist-save-minibuffer-history 1)
   :config
   (savehist-mode +1))
 
@@ -386,6 +421,39 @@
   :defer 10
   :config
   (global-emojify-mode))
+
+(use-package all-the-icons
+  :defer 5)
+
+(use-package paradox
+  :defer 5
+  :custom
+  (paradox-column-width-package 27)
+  (paradox-column-width-version 13)
+  (paradox-execute-asynchronously t)
+  (paradox-hide-wiki-packages t)
+  :config
+  (paradox-enable)
+  (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
+
+(use-package window
+  :ensure nil
+  :bind (("C-x 3" . hsplit-last-buffer)
+         ("C-x 2" . vsplit-last-buffer))
+  :preface
+  (defun hsplit-last-buffer ()
+    "Gives the focus to the last created horizontal window."
+    (interactive)
+    (split-window-horizontally)
+    (other-window 1)
+    (switch-to-next-buffer))
+
+  (defun vsplit-last-buffer ()
+    "Gives the focus to the last created vertical window."
+    (interactive)
+    (split-window-vertically)
+    (other-window 1)
+    (switch-to-next-buffer)))
 
 (provide 'my-env)
 ;;; my-env.el ends here

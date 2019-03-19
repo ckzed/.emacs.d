@@ -89,7 +89,9 @@
 
 (use-package rainbow-delimiters
   :defer 10
-  :diminish rainbow-delimiters-mode)
+  :diminish rainbow-delimiters-mode
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
 
 ;; syntax check
 (use-package flycheck
@@ -121,7 +123,8 @@
   sp-restrict-to-pairs-interactive
   sp-local-pair
   :init
-  (setq sp-interactive-dwim t)
+  (setq sp-interactive-dwim t
+        sp-escape-quotes-after-insert nil)
   :config
   (smartparens-global-mode t)
   (show-smartparens-global-mode t)
@@ -140,22 +143,41 @@
 ;;;; Projectile
 (use-package projectile
   :ensure t
-  :defer 10
+  :defer 5
   :diminish projectile-mode
   :init
-  (setq projectile-completion-system 'ivy)
-  (setq projectile-known-projects-file
-        (expand-file-name "projectile-bookmarks.eld" my-tmp-dir))
-  (setq projectile-use-git-grep t)
+  (setq projectile-completion-system 'ivy
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" my-tmp-dir)
+        projectile-cache-file (expand-file-name "projectile.cache" my-tmp-dir)
+        projectile-completion-system 'ivy
+        projectile-enable-caching t
+        projectile-use-git-grep t
+        projectile-keymap-prefix (kbd "C-c p")
+        projectile-mode-line '(:eval (projectile-project-name)))
   :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode t))
+  (projectile-global-mode))
+
+;; Counsel-projectile
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :config
+  (counsel-projectile-mode +1))
 
 ;;; git
 (use-package git
   :defer 10
   :bind
   ("<f9>"  . git-blame-mode))
+
+(use-package git-commit
+  :after magit
+  :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
+  :custom (git-commit-summary-max-length 50)
+  :preface
+  (defun my/git-commit-auto-fill-everywhere ()
+    "Ensures that the commit body does not exceed 72 characters."
+    (setq fill-column 72)
+    (setq-local comment-auto-fill-only-comments nil)))
 
 ;; magit
 (use-package magit
@@ -331,16 +353,8 @@
          ("M-]" . python-nav-forward-block))
   :defer 10
   :config
-  (elpy-enable)
   (autoload 'py-yapf "yapf" "Yet Another Python Formatter" t)
-  ;; (py-yapf-enable-on-save)
-  (anaconda-mode)
-  (when (require 'flycheck nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-  ;; (anaconda-eldoc-mode)
   :init
   (setq indent-tabs-mode nil)
   (setq tab-width 4)
@@ -348,6 +362,24 @@
   (setq py-smart-indentation t)
   (setq python-shell-native-complete nil)
   (setq python-indent-offset 4))
+
+(use-package anaconda-mode
+  :diminish anaconda-mode
+  :defer 10
+  :after python
+  :config
+  (anaconda-mode))
+
+(use-package elpy
+  :diminish elpy-mode
+  :defer 10
+  :after python
+  :config
+  (elpy-enable)
+  (when (require 'flycheck nil t)
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
+    (add-hook 'elpy-mode-hook 'flycheck-mode)))
 
 ;;;(use-package jedi
 ;;;  :defer t
@@ -418,10 +450,10 @@
 ;; protobuf
 (use-package protobuf-mode
   :defer 10
-   :config
-   (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
-   :init
-   (setq c-basic-offset 8))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
+  :init
+  (setq c-basic-offset 8))
 
 ;;;; ;; vdiff
 ;;;; (use-package vdiff
@@ -430,7 +462,8 @@
 
 
 ;; tickscripts
-(use-package tickscript-mode)
+(use-package tickscript-mode
+  :defer 10)
 
 ;; dockerfile
 (use-package dockerfile-mode

@@ -3,6 +3,7 @@
 (defvar my-packages
   '(
     ag
+    all-the-icons
     anaconda-mode
     auto-compile
     avy
@@ -13,6 +14,7 @@
     company-emoji
     company-go
     counsel
+    counsel-projectile
     dabbrev
     dashboard
     diff-hl
@@ -30,6 +32,7 @@
     flyspell-correct-ivy
     focus
     function-args
+    git-commit
     go-add-tags
     go-eldoc
     ;; go-flycheck
@@ -55,6 +58,7 @@
     offlineimap
     org
     org-bullets
+    paradox
     projectile
     protobuf-mode
     py-yapf
