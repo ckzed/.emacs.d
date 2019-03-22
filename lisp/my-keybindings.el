@@ -31,6 +31,7 @@
 (global-set-key (kbd "C-z") 'bury-buffer)
 
 (global-set-key (kbd "<f6>") (lambda() (interactive)(load-file "~/.emacs.d/init.el")))
+(global-set-key (kbd "<f7>") 'it-multi-term-dedicated-toggle)
 
 (provide 'my-keybindings)
 ;;; my-keybindings ends here

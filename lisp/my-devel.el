@@ -1,3 +1,5 @@
+;; package -- my-devel.el
+
 (use-package xcscope
   :defer 10
   :config
@@ -163,12 +165,7 @@
   :config
   (counsel-projectile-mode +1))
 
-;;; git
-(use-package git
-  :defer 10
-  :bind
-  ("<f9>"  . git-blame-mode))
-
+;; git-commit
 (use-package git-commit
   :after magit
   :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
@@ -187,6 +184,7 @@
   (:prefix-map magit-prefix-map
                :prefix "C-c g"
                (("a" . magit-stage-file)
+                ("b" . magit-blame)
                 ("c" . magit-checkout)
                 ("C" . magit-branch-and-checkout)
                 ("d" . magit-diff-range)
@@ -212,14 +210,14 @@
 
 ;; magithub
 (use-package magithub
-  :defer 10
+  :defer t
   :after magit
   :config
   (magithub-feature-autoinject t))
 
 ;; magit-gh-pulls
 (use-package magit-gh-pulls
-  :defer 10
+  :defer t
   :after magit
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))

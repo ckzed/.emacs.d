@@ -55,7 +55,6 @@
    ("C-x B" . ivy-switch-buffer-other-window)
    ("M-H" . ivy-resume)
    :map ivy-minibuffer-map
-   ("<tab>" . ivy-alt-done)
    ("C-i" . ivy-partial-or-done)
    :map ivy-switch-buffer-map
    ("C-k" . ivy-switch-buffer-kill))
@@ -164,7 +163,7 @@
 
 ;; beacon
 (use-package beacon
-  :defer 5
+  :defer t
   :diminish beacon-mode
   :init
   (setq beacon-push-mark 35
@@ -322,8 +321,13 @@
 ;; xkcd
 (use-package xkcd
   :defer 5
-  :config
-  (global-set-key (kbd "C-c C-r") 'xkcd-rand))
+  :bind
+  (("C-c x r" . xkcd-rand)
+   ("C-c x g" . xkcd-get-latest)
+   ("C-c x G" . xkcd-get)
+   ("C-c x c" . xkcd-get-latest-cached)
+   ("C-c x p" . xkcd-prev)
+   ("C-c x n" . xkcd-next)))
 
 ;; popup-imenu
 (use-package popup-imenu
@@ -454,6 +458,19 @@
     (split-window-vertically)
     (other-window 1)
     (switch-to-next-buffer)))
+
+;; multiterm
+(use-package multi-term
+  :defer t
+  :config
+  (add-hook 'term-mode-hook
+            (lambda()
+              (global-unset-key (kbd "C-r"))
+                                        ;	    (local-unset-key (kbd "C-r"))
+              (message "%s" "This is in term mode and hook enabled.")))
+  :init
+  (setq multi-term-program "/bin/sh")
+  (setq multi-term-dedicated-close-back-to-open-buffer-p t))
 
 (provide 'my-env)
 ;;; my-env.el ends here

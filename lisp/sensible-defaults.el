@@ -37,6 +37,7 @@
  ediff-split-window-function 'split-window-horizontally
  ediff-window-setup-function 'ediff-setup-windows-plain
  electric-indent-mode nil
+ enable-recursive-minibuffers nil
  fill-column 80
  font-lock-maximum-decoration t
  gc-cons-threshold 50000000

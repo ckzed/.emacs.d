@@ -65,4 +65,17 @@ Modified 2002/02/26.C.16:26 from \"files.el\""
     (indent-region (point-min) (point-max) nil)
     (untabify (point-min) (point-max))))
 
+(defun it-multi-term-dedicated-toggle ()
+  "jump back to previous location after toggling ded term off"
+  (interactive)
+  (if (multi-term-dedicated-exist-p)
+      (progn
+  (multi-term-dedicated-toggle)
+  (switch-to-buffer-other-window old-buf))
+    (progn
+      (setq old-buf (current-buffer))
+      (multi-term-dedicated-toggle))
+    )
+  )
+
 (provide 'my-utils)
