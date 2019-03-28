@@ -58,6 +58,7 @@
     offlineimap
     org
     org-bullets
+    osx-location
     paradox
     projectile
     protobuf-mode

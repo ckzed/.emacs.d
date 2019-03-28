@@ -7,6 +7,14 @@
       user-mail-host "zededa.com"
       user-mail-address "chirag@zededa.com")
 
+(eval-after-load 'osx-location
+  '(when (eq system-type 'darwin)
+     (add-hook 'osx-location-changed-hook
+               (lambda ()
+                 (setq calendar-latitude osx-location-latitude
+                       calendar-longitude osx-location-longitude
+                       calendar-location-name (format "%s, %s" osx-location-latitude osx-location-longitude))))))
+
 (defvar my-home-dir (concat (getenv "HOME") "/"))
 (defvar my-emacs-dir (concat my-home-dir ".emacs.d/"))
 (defvar my-tmp-dir (concat my-emacs-dir "tmp"))

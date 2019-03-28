@@ -472,5 +472,9 @@
   (setq multi-term-program "/bin/sh")
   (setq multi-term-dedicated-close-back-to-open-buffer-p t))
 
+;; osx-location
+(use-package osx-location
+  :defer 3)
+
 (provide 'my-env)
 ;;; my-env.el ends here

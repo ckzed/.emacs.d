@@ -157,7 +157,6 @@ Example:
   :commands org-bullets-mode
   :preface
   (defun org-bullets-mode-hook ()
-    (setq org-bullets-bullet-list '("◉" "◎" "⚫" "○" "►" "◇"))
     (org-bullets-mode +1)))
 
 ;; start org-mode upon start

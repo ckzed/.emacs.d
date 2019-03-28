@@ -147,6 +147,9 @@
   :ensure t
   :defer 5
   :diminish projectile-mode
+  :bind
+  ("C-c p n" . projectile-next-project-buffer)
+  ("C-c p p" . projectile-previous-project-buffer)
   :init
   (setq projectile-completion-system 'ivy
         projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" my-tmp-dir)
@@ -366,6 +369,8 @@
   :defer 10
   :after python
   :config
+  (bind-key "M-," #'anaconda-nav-pop-marker anaconda-mode-map)
+  (bind-key "M-." #'anaconda-mode-find-definitions anaconda-mode-map)
   (anaconda-mode))
 
 (use-package elpy
@@ -434,6 +439,10 @@
   (go-guru-hl-identifier-mode)
   (go-eldoc-setup))
 
+;; flymake
+(use-package flymake
+  :diminish flymake-mode)
+
 ;;;; ;; focus
 ;;;; (use-package focus
 ;;;;   :defer t)
@@ -485,14 +494,12 @@
   ;; (diff-hl-margin-mode t)
   ;; (diff-hl-flydiff-mode t)
   (electric-indent-mode +1)
-  ;; (eldoc-mode +1)             ;; eldoc-mode can be irritating
   ;; (fa-config-default)
   (flycheck-mode)
   (flyspell-prog-mode)
   (projectile-mode +1)
   ;; (focus-mode +1)
   ;; (function-args-mode +1)
-  ;; (highlight-symbol-mode +1)
   ;; (local-set-key (kbd "RET") 'newline-and-indent)
   (local-set-key (kbd "C-<backspace>") 'c-hungry-backspace)
   (prettify-symbols-mode +1)
