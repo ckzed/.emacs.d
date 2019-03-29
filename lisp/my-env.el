@@ -476,5 +476,11 @@
 (use-package osx-location
   :defer 3)
 
+;; ag
+(use-package ag
+  :init
+  (setq ag-highlight-search t
+        ag-reuse-window 't))
+
 (provide 'my-env)
 ;;; my-env.el ends here

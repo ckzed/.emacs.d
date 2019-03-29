@@ -165,6 +165,8 @@
 ;; Counsel-projectile
 (use-package counsel-projectile
   :after (counsel projectile)
+  :init
+  (setq counsel-projectile-ag-initial-input '(ivy-thing-at-point))
   :config
   (counsel-projectile-mode +1))
 
