@@ -375,6 +375,12 @@
   (bind-key "M-." #'anaconda-mode-find-definitions anaconda-mode-map)
   (anaconda-mode))
 
+(use-package company-anaconda
+  :after anaconda-mode
+  :config
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-anaconda)))
+
 (use-package elpy
   :diminish elpy-mode
   :defer 10

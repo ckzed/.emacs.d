@@ -18,7 +18,8 @@
   :bind
   ("C-c f" . org-toggle-todo-and-fold)
   :init
-  (setq org-agenda-files (list (expand-file-name ".todo.org" my-home-dir))
+  (setq org-agenda-files (list (expand-file-name ".todo.org" my-home-dir)
+                               (expand-file-name ".schedule.org" my-home-dir))
 	org-refile-targets '(("~/.someday.org" :level . 1))
         org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
@@ -167,5 +168,19 @@ Example:
 ;;     :after org-agenda
 ;;     :ensure t
 ;;     :config (idle-org-agenda-mode))
+
+;; org-gcal
+(use-package org-gcal
+  :defer 3
+  :init
+  (setq org-gcal-client-id "795438884323-7rhs1rn1firp36kgj03t215dk383peks.apps.googleusercontent.com"
+        org-gcal-client-secret "H9rNjIj6rJ7I4fe2CTAxXvYG"
+        org-gcal-file-alist '(("chirag@zededa.com" .  "~/.schedule.org"))))
+
+(use-package org-alert
+  :defer 3
+  :init
+  (setq alert-default-style 'osx-notifier
+	org-alert-notification-title "Org Scheduler"))
 
 (provide 'my-org)
