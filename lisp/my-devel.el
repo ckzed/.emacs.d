@@ -546,6 +546,12 @@
 
 (require 'my-sandboxes)
 
+;; terraform
+;; (use-package company-terraform
+;;  :after terraform)
+;; (use-package terraform
+;;  :defer 10)
+
 ;;;; test section
 ;;;; (require 'magit-gh-pulls)
 ;;;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)

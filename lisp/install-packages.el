@@ -11,8 +11,10 @@
     better-defaults
     bind-key
     company
+    company-anaconda
     company-emoji
     company-go
+    company-terraform
     counsel
     counsel-projectile
     dabbrev
@@ -75,6 +77,7 @@
     smex
     subword
     swiper
+    ;; terraform
     tickscript-mode
     type-break
     use-package

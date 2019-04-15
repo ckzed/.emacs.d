@@ -82,6 +82,14 @@
       (notmuch-search-tag (list "-inbox" "+deleted"))
       (next-line) ))
 
+  ;; bounce mail
+  (define-key notmuch-show-mode-map "b"
+      (lambda (&optional address)
+        "Bounce the current message."
+        (interactive "sBounce To: ")
+        (notmuch-show-view-raw-message)
+        (message-resend address)))
+
   ;; start polling for mails using offlineimap
   (offlineimap)
   )

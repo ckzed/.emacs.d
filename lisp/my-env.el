@@ -436,6 +436,8 @@
   (paradox-column-width-version 13)
   (paradox-execute-asynchronously t)
   (paradox-hide-wiki-packages t)
+  :init
+  (setq paradox-github-token "15320b3eed96db050a2e3d4e787d822b62ca49a2")
   :config
   (paradox-enable)
   (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
@@ -481,6 +483,12 @@
   :init
   (setq ag-highlight-search t
         ag-reuse-window 't))
+
+;; tramp
+(use-package tramp
+  :defer 10
+  :init
+  (setq tramp-default "ssh"))
 
 (provide 'my-env)
 ;;; my-env.el ends here
