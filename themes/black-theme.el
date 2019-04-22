@@ -144,7 +144,7 @@
    `(js3-warning-face ((,class (:underline ,keyword))))
    `(lazy-highlight ((,class (:foreground ,fg2 :background ,bg3))))
    `(link ((,class (:foreground ,const :underline t))))
-   `(magit-branch ((,class (:foreground ,const :weight bold))))
+   `(magit-branch ((,class (:foreground ,blue-dark :weight bold))))
    `(magit-diff-context-highlight ((,class (:background ,bg3 :foreground ,fg3))))
    `(magit-diff-file-header ((,class (:foreground ,fg2 :background ,bg3))))
    `(magit-diffstat-added   ((,class (:foreground ,type))))

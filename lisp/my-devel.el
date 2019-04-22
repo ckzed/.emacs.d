@@ -542,7 +542,8 @@
 (mapc (lambda(mode-hook)
        (add-hook mode-hook 'my-common-prog-settings))
       '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
-			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode))
+			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode
+			   makefile-mode-hook))
 
 (require 'my-sandboxes)
 
