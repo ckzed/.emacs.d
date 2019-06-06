@@ -1,5 +1,7 @@
-;; package -- my-devel.el
+;;; package -- my-devel.el
+;;; Commentary:
 
+;;; Code:
 (use-package xcscope
   :defer 10
   :config
@@ -546,6 +548,13 @@
 			   makefile-mode-hook))
 
 (require 'my-sandboxes)
+
+;; kotlin
+(autoload 'kotlin-mode "kotlin-mode" "Kotlin Mode." t)
+(add-to-list 'auto-mode-alist '("\\.kt$" . kotlin-mode))
+(use-package flycheck-kotlin
+  :config
+  (add-hook 'kotlin-mode-hook 'flycheck-mode))
 
 ;; terraform
 ;; (use-package company-terraform

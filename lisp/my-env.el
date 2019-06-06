@@ -490,5 +490,11 @@
   :init
   (setq tramp-default "ssh"))
 
+;; elscreen
+(use-package elscreen
+  :defer 3
+  :init
+  (setq elscreen-prefix-key "\C-\\"))
+
 (provide 'my-env)
 ;;; my-env.el ends here

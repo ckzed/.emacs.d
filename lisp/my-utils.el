@@ -78,4 +78,11 @@ Modified 2002/02/26.C.16:26 from \"files.el\""
     )
   )
 
+;; Source: http://www.emacswiki.org/emacs-en/download/misc-cmds.el
+(defun revert-buffer-no-confirm ()
+    "Revert buffer without confirmation."
+    (interactive)
+    (revert-buffer :ignore-auto :noconfirm))
+(global-set-key (kbd "C-c 5") 'revert-buffer-no-confirm)
+
 (provide 'my-utils)

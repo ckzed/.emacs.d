@@ -6,10 +6,10 @@
 ;;; Code:
 
 ;; offlineimap
-(use-package offlineimap
-  :defer 10
-  :config
-  (offlineimap))
+;; (use-package offlineimap
+;;   :defer 10
+;;   :config
+;;   (offlineimap))
 
 ;; write good
 (add-hook 'message-mode-hook '(lambda()
