@@ -4,11 +4,11 @@
 ;;; Code:
 (use-package xcscope
   :defer 10
-  :config
+  :init
   (setq cscope-option-do-not-update-database t)
   (setq cscope-close-window-after-select t)
   (setq cscope-option-use-inverted-index t)
-  :init
+  :config
   (cscope-setup))
 
 ;; highlight uncommitted changes
@@ -104,7 +104,13 @@
   :config
   (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point)
   (add-hook 'after-init-hook 'global-flycheck-mode)
-  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
+  (global-flycheck-mode 1)
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+  :init
+  (setq flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  (setq flycheck-python-flake8-executable "/usr/local/bin/flake8")
+  (setq flycheck-python-pylint-executable "/usr/local/bin/pylint"))
 
 ;;;; function-args
 ;;;;(use-package function-args
@@ -363,9 +369,6 @@
   :init
   (setq indent-tabs-mode nil)
   (setq tab-width 4)
-  (setq py-indent-offset tab-width)
-  (setq py-smart-indentation t)
-  (setq python-shell-native-complete nil)
   (setq python-indent-offset 4))
 
 (use-package anaconda-mode
@@ -413,23 +416,28 @@
 ;;
 ;;;; autoload gdb-script-mode while editing .gdb files
 ;;;; (add-to-list 'auto-mode-alist '("\\.gdb$" . gdb-script-mode))
-;;
-;;;; use js3-mode instead of default javascript mode
-;;;; (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
-;;;; (add-to-list 'auto-mode-alist '("\\.json$" . js3-mode))
-;;;; (use-package js3-mode
-;;;;   :defer t
-;;;;  :init
-;;;;  (setq js3-indent-level 4))
+
+;; use js3-mode instead of default javascript mode
+(use-package js3-mode
+  :defer 10
+  :init
+  (setq js3-indent-level 4)
+  :config
+  (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode)))
+
+(use-package json
+  :defer 10
+  :config
+  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+  (require 'flycheck-demjsonlint))
 
 ;; go lang
-(add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
 (use-package go-mode
   :ensure t
   :defer 10
   :init
   (setq gofmt-command "goimports")
-  (setq c-basic-offset 8)
+  ;; (setq c-basic-offset 8)
   (set (make-local-variable 'company-backends) '(company-go))
   (add-hook 'before-save-hook 'gofmt-before-save)
   (when (memq window-system '(mac ns))
@@ -446,6 +454,7 @@
   (require 'go-flymake)
   (require 'go-flycheck)
   (require 'company-go)
+  (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
   (go-guru-hl-identifier-mode)
   (go-eldoc-setup))
 
@@ -497,6 +506,12 @@
   (defun my/json-mode-before-save-hook ()
     (when (eq major-mode 'json-mode)
       (json-pretty-print-buffer))))
+
+;; groovy (Jenkinsfile)
+(use-package groovy-mode
+  :defer 10
+  :init
+  (setq groovy-indent-offset 2))
 
 ;; hook for all programming mode
 (defun my-common-prog-settings()
@@ -555,6 +570,11 @@
 (use-package flycheck-kotlin
   :config
   (add-hook 'kotlin-mode-hook 'flycheck-mode))
+
+;; shell
+(add-hook 'sh-mode-hook (lambda ()
+                          (setq sh-basic-offset 8
+                                sh-indentation 8)))
 
 ;; terraform
 ;; (use-package company-terraform

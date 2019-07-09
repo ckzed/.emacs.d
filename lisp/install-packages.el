@@ -1,3 +1,8 @@
+;;; package --- Summary
+;;; Commentary:
+
+;;; Code:
+
 (require 'package)
 
 (defvar my-packages
@@ -42,6 +47,7 @@
     go-guru
     go-mode
     goto-last-change
+    ;; groovy
     hl-line
     hl-todo
     ibuffer
@@ -94,11 +100,19 @@
     ))
 
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-	("melpa" . "http://stable.melpa.org/packages/")
-	;; ("marmalade" . "https://marmalade-repo.org/packages/")
+      '(("melpa-stable" . "http://stable.melpa.org/packages/")
+	("melpa" . "http://melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("marmalade" . "https://marmalade-repo.org/packages/")
 	("org" . "http://orgmode.org/elpa/")))
+
+(setq package-pinned-packages
+      '(
+	;; "unstable" package
+	(flycheck           . "melpa")))
+
 (package-initialize)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))

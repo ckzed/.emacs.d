@@ -91,7 +91,7 @@
         (message-resend address)))
 
   ;; start polling for mails using offlineimap
-  (offlineimap)
+  ;; (offlineimap)
   )
 
 (provide 'notmuch-config)

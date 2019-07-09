@@ -273,12 +273,12 @@
   (sml/apply-theme 'respectful))
 
 ;; Take a break
-(use-package type-break
-  :defer 5
-  :bind
-  ("<f12>" . type-break)
-  :config
-  (type-break-mode))
+;; (use-package type-break
+;;   :defer 5
+;;   :bind
+;;   ("<f12>" . type-break)
+;;   :config
+;;   (type-break-mode))
 
 ;; Screens
 ;; (use-package escreen
@@ -313,10 +313,10 @@
 
 ;; nyan-mode
 (use-package nyan-mode
-  :defer 5
-  :ensure t
-  :config
-  (nyan-mode))
+ :defer 5
+ :ensure t
+ :config
+ (nyan-mode))
 
 ;; xkcd
 (use-package xkcd
@@ -467,11 +467,11 @@
   :config
   (add-hook 'term-mode-hook
             (lambda()
-              (global-unset-key (kbd "C-r"))
-                                        ;	    (local-unset-key (kbd "C-r"))
+              ;; (global-unset-key (kbd "C-r"))
+	      (local-unset-key (kbd "C-r"))
               (message "%s" "This is in term mode and hook enabled.")))
   :init
-  (setq multi-term-program "/bin/sh")
+  (setq multi-term-program "/bin/zsh")
   (setq multi-term-dedicated-close-back-to-open-buffer-p t))
 
 ;; osx-location
@@ -491,10 +491,10 @@
   (setq tramp-default "ssh"))
 
 ;; elscreen
-(use-package elscreen
-  :defer 3
-  :init
-  (setq elscreen-prefix-key "\C-\\"))
+;; (use-package elscreen
+;;   :defer 3
+;;   :init
+;;   (setq elscreen-prefix-key "\C-\\"))
 
 (provide 'my-env)
 ;;; my-env.el ends here

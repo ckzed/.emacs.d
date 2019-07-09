@@ -1,3 +1,6 @@
+;; package --- Summary
+;;; Commentary:
+;;; Code:
 (deftheme black "Created 2019-01-12.")
 (let ((class '((class color) (min-colors 89)))
       (fg                     "#999999")
@@ -205,11 +208,11 @@
    `(org-ellipsis ((,class (:foreground ,builtin))))
    `(org-footnote  ((,class (:underline t :foreground ,fg4))))
    `(org-hide ((,class (:foreground ,fg4))))
-   '(org-level-1 ((t (:inherit outline-1 :height 1.5))))
-   '(org-level-2 ((t (:inherit outline-2 :height 1.0))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
-   '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
-   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+   '(org-level-1 ((t (:inherit outline-1))))
+   '(org-level-2 ((t (:inherit outline-2))))
+   '(org-level-3 ((t (:inherit outline-3))))
+   '(org-level-4 ((t (:inherit outline-4))))
+   '(org-level-5 ((t (:inherit outline-5))))
    ;; `(org-level-1 ((,class (:bold t :foreground ,lightblue :height 20))))
    ;; `(org-level-2 ((,class (:bold nil :foreground ,tasks))))
    ;; `(org-level-3 ((,class (:bold t :foreground ,purple))))
