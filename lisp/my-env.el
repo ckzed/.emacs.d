@@ -5,7 +5,7 @@
 ;;; Code:
 
 (use-package recentf
-  :defer 5
+  :defer t
   :init
   (setq recentf-save-file (expand-file-name "recentf" my-tmp-dir)
 	recentf-max-menu-items 50
@@ -19,7 +19,6 @@
   (recentf-mode +1))
 
 (use-package session
-  :defer 5
   :init
   (setq session-initialize '(de-saveplace session keys menus places)
         session-globals-include '((kill-ring 50)
@@ -35,7 +34,7 @@
 
 (use-package counsel
   :diminish counsel-mode
-  :defer 5
+  :defer t
   :bind
   (("C-x C-d" . counsel-dired-jump)
    ("C-x C-h" . counsel-minibuffer-history)
@@ -48,7 +47,7 @@
   (counsel-mode))
 
 (use-package ivy
-  :defer 5
+  :defer t
   :diminish ivy-mode
   :bind
   (("C-x b" . ivy-switch-buffer)
@@ -69,7 +68,7 @@
   (ivy-mode))
 
 (use-package smex
-  :defer 5
+  :defer t
   :bind
   (("M-x" . smex)
    ("M-X" . smex-major-mode-commands))
@@ -79,7 +78,7 @@
   (smex-initialize))
 
 (use-package avy
-  :defer 5
+  :defer t
   :bind
   ("C-." . avy-goto-char)
   ("M-s" . avy-goto-word-1)
@@ -101,7 +100,7 @@
 ;;         highlight-tail-posterior-type 'const))
 
 (use-package hl-line
-  :defer 5
+  :defer t
   :config
   (set-face-background 'hl-line "#3e4446")
   (set-face-background 'highlight nil)
@@ -112,13 +111,13 @@
          ("C-x w" . switch-window-then-swap-buffer)))
 
 (use-package expand-region
-  :defer 5
+  :defer t
   :bind
   ("C-=" . er/expand-region))
 
 (use-package which-key
   :diminish which-key-mode
-  :defer 5
+  :defer 3
   :commands
   which-key-mode
   :init
@@ -129,7 +128,7 @@
 ;; rainbow-mode to display colors as the background of the hex code
 (use-package rainbow-mode
   :diminish rainbow-mode
-  :defer 5
+  :defer t
   :preface
   (defun enable-rainbow-mode ()
     (when (string-match "\\(\\.emacs\\|color-theme-\\|-theme\\|init\\.el\\)" (buffer-name))
@@ -142,6 +141,7 @@
 ;; swiper
 (use-package swiper
   :ensure t
+  :defer t
   :bind
   (("C-s" . swiper)
    ("C-r" . swiper)
@@ -154,7 +154,7 @@
   (define-key swiper-map (kbd "M-.")
     (lambda () (interactive) (insert (format "\\<%s\\>" (with-ivy-window (thing-at-point 'word))))))
   :init
-
+  (setq swiper-stay-on-quit t)
   ;;advise swiper to recenter on exit
   (defun swiper-recenter (&rest args)
     "recenter display after swiper"
@@ -187,14 +187,14 @@
 ;; flyspell
 (use-package flyspell
   :diminish flyspell-mode
-  :defer 5
+  :defer t
   :init
   (flyspell-mode))
 
 ;; spell check
 (use-package flyspell-correct-ivy
   :ensure t
-  :defer 5
+  :defer t
   :after (flyspell ivy)
   :init
   (setq flyspell-correct-interface #'flyspell-correct-ivy)
@@ -214,7 +214,7 @@
 ;;; Auto complete (company -> COMPlete ANYthing)
 (use-package company
   :ensure t
-  :defer 5
+  :defer t
   :diminish company-mode
   :commands company-mode
   :init
@@ -253,7 +253,7 @@
 
 ;; savehist
 (use-package savehist
-  :defer 5
+  :defer t
   :init
   (setq savehist-file (expand-file-name "savehist" my-tmp-dir)
         history-length 10000
@@ -288,14 +288,14 @@
 
 ;; ibuffer
 (use-package ibuffer
-  :defer 5
+  :defer t
   :config
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (autoload 'ibuffer "ibuffer" "List buffers." t))
 
 ;; ibuffer-projectile
 (use-package ibuffer-projectile
-  :defer 5
+  :defer t
   :after ibuffer
   :preface
   (defun my/ibuffer-projectile ()
@@ -306,21 +306,21 @@
 
 ;; write good
 (use-package writegood-mode
-  :defer 5
+  :defer t
   :diminish writegood-mode
   :config
   (writegood-mode))
 
 ;; nyan-mode
 (use-package nyan-mode
- :defer 5
+ :defer 10
  :ensure t
  :config
  (nyan-mode))
 
 ;; xkcd
 (use-package xkcd
-  :defer 5
+  :defer t
   :bind
   (("C-c x r" . xkcd-rand)
    ("C-c x g" . xkcd-get-latest)
@@ -331,27 +331,27 @@
 
 ;; popup-imenu
 (use-package popup-imenu
-  :defer 5
+  :defer t
   :commands popup-imenu
   :bind
   ("M-i" . popup-imenu))
 
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
-  :defer 5
+  :defer t
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 ;; discover
 (use-package discover
-  :defer 5
+  :defer t
   :config
   (global-discover-mode +1))
 
 (use-package dired
   :ensure nil
-  :defer 5
+  :defer t
   :custom
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
@@ -362,7 +362,7 @@
 
 ;; engine
 (use-package engine-mode
-  :defer 5
+  :defer t
   :init
   (setq engine/browser-function 'eww-browse-url)
   :config
@@ -413,6 +413,14 @@
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
   :init
   ;; (setq dashboard-startup-banner nil)
+  (setq dashboard-items '((projects . 5)
+                          (recents  . 5)
+                          (agenda . 5)
+                          (bookmarks . 5)
+                          (registers . 5)))
+  (setq dashboard-set-navigator t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
   (add-hook 'after-init-hook 'dashboard-refresh-buffer)
   (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
   :custom
@@ -422,15 +430,23 @@
 
 ;; emojis :+1:
 (use-package emojify
-  :defer 10
+  :defer t
   :config
   (global-emojify-mode))
 
 (use-package all-the-icons
-  :defer 5)
+  :defer t)
+
+(use-package all-the-icons-ivy
+  :after (all-the-icons ivy)
+  :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window))
+  :config
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-dired-jump)
+  (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
+  (all-the-icons-ivy-setup))
 
 (use-package paradox
-  :defer 5
+  :defer t
   :custom
   (paradox-column-width-package 27)
   (paradox-column-width-version 13)
@@ -476,25 +492,53 @@
 
 ;; osx-location
 (use-package osx-location
-  :defer 3)
+  :defer t)
 
 ;; ag
 (use-package ag
+  :defer t
   :init
   (setq ag-highlight-search t
         ag-reuse-window 't))
 
 ;; tramp
 (use-package tramp
-  :defer 10
-  :init
-  (setq tramp-default "ssh"))
+  :defer t)
+
+;; diary
+(require 'calendar)
+(setq view-diary-entries-initially t
+      mark-diary-entries-in-calendar t
+      number-of-diary-entries 7)
+(add-hook 'diary-display-hook 'fancy-diary-display)
+(add-hook 'today-visible-calendar-hook 'calendar-mark-today)
+
+(add-hook 'fancy-diary-display-mode-hook
+          '(lambda ()
+             (alt-clean-equal-signs)))
+
+(defun alt-clean-equal-signs ()
+  "This function makes lines of = signs invisible."
+  (goto-char (point-min))
+  (let ((state buffer-read-only))
+    (when state (setq buffer-read-only nil))
+    (while (not (eobp))
+      (search-forward-regexp "^=+$" nil 'move)
+      (add-text-properties (match-beginning 0)
+                           (match-end 0)
+                           '(invisible t)))
+    (when state (setq buffer-read-only t))))
 
 ;; elscreen
 ;; (use-package elscreen
 ;;   :defer 3
 ;;   :init
 ;;   (setq elscreen-prefix-key "\C-\\"))
+
+;; zone-matrix
+;; (use-package zone
+;;  :config
+;;  (zone-when-idle 20))
 
 (provide 'my-env)
 ;;; my-env.el ends here

@@ -7,4 +7,6 @@
 (add-to-list 'sml/replacer-regexp-list '("^~/Work/cluster-configs/" ":CC:") t)
 (add-to-list 'sml/replacer-regexp-list '("^~/Work/config-builder/" ":CB:") t)
 (add-to-list 'sml/replacer-regexp-list '("^~/Work/sre-containers/" ":SC:") t)
+(add-to-list 'sml/replacer-regexp-list '("^~/Work/eve/" ":EVE:") t)
+
 (provide 'my-sandboxes)

@@ -27,6 +27,8 @@
     diff-hl
     diminish
     discover
+    dotenv-mode
+    dumb-jump
     dockerfile-mode
     elpy
     emojify
@@ -34,6 +36,7 @@
     exec-path-from-shell
     expand-region
     flycheck
+    flycheck-pycheckers
     flymake-python-pyflakes
     flyspell
     flyspell-correct-ivy
@@ -103,7 +106,6 @@
       '(("melpa-stable" . "http://stable.melpa.org/packages/")
 	("melpa" . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")
-        ("marmalade" . "https://marmalade-repo.org/packages/")
 	("org" . "http://orgmode.org/elpa/")))
 
 (setq package-pinned-packages

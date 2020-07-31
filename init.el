@@ -1,5 +1,8 @@
+;;; package -- Summary
+;;; Commentary:
 ;; 2019
 
+;;; Code:
 (defconst my-start-time (current-time))
 
 (setq user-full-name "Chirag Kantharia"
@@ -19,7 +22,7 @@
 (defvar my-emacs-dir (concat my-home-dir ".emacs.d/"))
 (defvar my-tmp-dir (concat my-emacs-dir "tmp"))
 
-(add-to-list 'load-path "/usr/local/share/emacs/27.0.50/lisp")
+(add-to-list 'load-path "/usr/local/share/emacs/26.3/lisp")
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
 (add-to-list 'load-path (concat my-emacs-dir "lisp"))
 (add-to-list 'load-path (concat my-emacs-dir "pkgs"))
@@ -32,7 +35,8 @@
 
 (setq custom-theme-directory
       (concat my-emacs-dir "themes"))
-(load-theme 'black t)
+ (load-theme 'black t)
+;; (load-theme 'basic t)
 
 (require 'my-env)
 (require 'my-keybindings)
@@ -50,7 +54,8 @@
              (org-agenda nil "a")) t)
 
 
-;; /end
+(provide 'init)
+;;; init.el ends here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -58,8 +63,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck-kotlin zone-nyan yaml-mode xkcd xcscope writegood-mode win-switch whitespace-cleanup-mode which-key web-mode volatile-highlights use-package-ensure-system-package tickscript-mode switch-window smex smartparens smart-mode-line slime-company session rainbow-mode rainbow-delimiters py-yapf py-autopep8 protobuf-mode popup-imenu paradox osx-location org-gcal org-bullets org-alert offlineimap nyan-mode nov notmuch mustache-mode multi-term magithub magit-gh-pulls json-mode js3-mode idle-highlight-mode ibuffer-projectile hl-todo highlight-symbol goto-last-change go-guru go-eldoc go-add-tags git function-args focus flyspell-correct-ivy flymake-python-pyflakes flymake-json flycheck-color-mode-line expand-region exec-path-from-shell engine-mode emojify elscreen elpy dockerfile-mode discover diminish diff-hl delight dashboard counsel-projectile company-terraform company-go company-emoji company-anaconda better-defaults beacon avy auto-compile all-the-icons ag)))
- '(paradox-automatically-star t))
+    (company-org-roam org-roam forge dot-env zone-nyan zone-matrix yaml-mode xkcd xcscope writegood-mode win-switch whitespace-cleanup-mode which-key web-mode volatile-highlights virtualenvwrapper use-package-ensure-system-package tickscript-mode switch-window smex smartparens smart-mode-line slime-company session rainbow-mode rainbow-delimiters py-yapf py-autopep8 protobuf-mode popup-imenu password-generator paradox osx-location org-pivotal org-gcal org-doing org-bullets org-alert offlineimap nyan-mode nov notmuch mustache-mode multi-term magithub magit-gh-pulls lsp-ui kotlin-mode json-mode js3-mode idle-highlight-mode ibuffer-projectile hl-todo highlight-symbol groovy-mode goto-last-change google-translate go-guru go-gopath go-eldoc go-add-tags git function-args focus flyspell-correct-ivy flymake-python-pyflakes flymake-json flymake-go-staticcheck flycheck-pycheckers flycheck-kotlin flycheck-demjsonlint flycheck-color-mode-line expand-region exec-path-from-shell engine-mode emojify elscreen elpy dumb-jump dotenv-mode dockerfile-mode discover diminish diff-hl delight dashboard dap-mode counsel-projectile counsel-gtags company-terraform company-lsp company-go company-emoji company-anaconda better-defaults beacon auto-compile ansible all-the-icons-ivy ag)))
+ '(session-use-package t nil (session)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

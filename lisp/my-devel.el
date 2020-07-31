@@ -3,13 +3,23 @@
 
 ;;; Code:
 (use-package xcscope
-  :defer 10
+  :defer t
   :init
   (setq cscope-option-do-not-update-database t)
   (setq cscope-close-window-after-select t)
   (setq cscope-option-use-inverted-index t)
   :config
   (cscope-setup))
+
+(use-package counsel-gtags
+  :defer t
+  :diminish counsel-gtags-mode
+  :config
+  (with-eval-after-load 'counsel-gtags
+    (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
+    (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
+    (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
+    (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)))
 
 ;; highlight uncommitted changes
 (use-package diff-hl
@@ -38,7 +48,7 @@
   (setq whitespace-style '(face empty tabs lines-tail trailing))
   :diminish whitespace-mode)
 
-;;;; make the whitespace cleanup as default
+;; make the whitespace cleanup as default
 (use-package whitespace-cleanup-mode
   :defer 10
   :config
@@ -189,19 +199,27 @@
     (setq fill-column 72)
     (setq-local comment-auto-fill-only-comments nil)))
 
+;; forge
+(use-package forge
+  :ensure t
+  :defer 10
+  )
+
 ;; magit
 (use-package magit
+  :after forge
   :ensure t
   :defer 10
   :bind
   (:prefix-map magit-prefix-map
                :prefix "C-c g"
-               (("a" . magit-stage-file)
+               (("A" . magit-commit-amend)
+                ("a" . magit-stage-file)
                 ("b" . magit-blame)
                 ("c" . magit-checkout)
                 ("C" . magit-branch-and-checkout)
                 ("d" . magit-diff-range)
-                ("D" . magit-discard)
+                ("D" . magit-branch-delete)
                 ("f" . magit-fetch-other)
                 ("g" . vc-git-grep)
                 ("G" . magit-gitignore-globally)
@@ -210,16 +228,16 @@
                 ("m" . magit-merge-plain)
                 ("M" . magit)
                 ("n" . magit-notes-edit)
+                ("o" . forget-list-owned-pullreqs)
                 ("p" . magit-pull-branch)
                 ("P" . magit-push-other)
                 ("r" . magit-show-refs-head)
                 ("R" . magit-rebase-branch)
                 ("s" . magit-status)
                 ("S" . magit-stash-both)
-                ("t" . magit-tag-create)
-                ("T" . magit-tag-delete)
                 ("u" . magit-unstage)
-                ("U" . magit-stash-pop))))
+                ("U" . magit-stash-pop)
+                ("Z" . forge-create-pullreq))))
 
 ;; magithub
 (use-package magithub
@@ -348,7 +366,7 @@
   (abbrev-mode nil)
   (message "Loaded Juniper C default style"))
 
-(add-hook 'c-mode-common-hook 'juniper-c-default-style)
+;; (add-hook 'c-mode-common-hook 'juniper-c-default-style)
 
 ;;;; (font-lock-add-keywords nil '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|HACK\\):" 1 font-lock-warning-face t)))
 ;;;; (rainbow-delimiters-mode)
@@ -365,6 +383,8 @@
   :defer 10
   :config
   (autoload 'py-yapf "yapf" "Yet Another Python Formatter" t)
+  ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
+  (add-hook 'python-mode-hook 'flycheck-mode)
 
   :init
   (setq indent-tabs-mode nil)
@@ -376,8 +396,8 @@
   :defer 10
   :after python
   :config
-  (bind-key "M-," #'anaconda-nav-pop-marker anaconda-mode-map)
-  (bind-key "M-." #'anaconda-mode-find-definitions anaconda-mode-map)
+  (bind-key "C-c M-," #'anaconda-nav-pop-marker anaconda-mode-map)
+  (bind-key "C-c M-." #'anaconda-mode-find-definitions anaconda-mode-map)
   (anaconda-mode))
 
 (use-package company-anaconda
@@ -386,16 +406,16 @@
   (eval-after-load "company"
     '(add-to-list 'company-backends 'company-anaconda)))
 
-(use-package elpy
-  :diminish elpy-mode
-  :defer 10
-  :after python
-  :config
-  (elpy-enable)
-  (when (require 'flycheck nil t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
-    (add-hook 'elpy-mode-hook 'flycheck-mode)))
+;; (use-package elpy
+;;   :diminish elpy-mode
+;;   :defer 10
+;;   :after python
+;;   :config
+;;   (elpy-enable)
+;;  (when (require 'flycheck nil t)
+;;    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;    ;;(add-hook 'elpy-mode-hook 'py-yapf-enable-on-save)
+;;    (add-hook 'elpy-mode-hook 'flycheck-mode)))
 
 ;;;(use-package jedi
 ;;;  :defer t
@@ -419,22 +439,14 @@
 
 ;; use js3-mode instead of default javascript mode
 (use-package js3-mode
-  :defer 10
+  :defer t
   :init
   (setq js3-indent-level 4)
   :config
   (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode)))
 
-(use-package json
-  :defer 10
-  :config
-  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-  (require 'flycheck-demjsonlint))
-
 ;; go lang
 (use-package go-mode
-  :ensure t
-  :defer 10
   :init
   (setq gofmt-command "goimports")
   ;; (setq c-basic-offset 8)
@@ -445,7 +457,7 @@
     (exec-path-from-shell-copy-env "GOPATH"))
   :bind
   ("C-c m" . gofmt)
-  ("M-." . godef-jump)
+  ("C-c C-." . godef-jump)
   ("C-c C-r" . go-remove-unused-imports)
   ("C-c i" . go-goto-imports)
   ;;  ("M-/" . company-go)
@@ -454,13 +466,23 @@
   (require 'go-flymake)
   (require 'go-flycheck)
   (require 'company-go)
+  (require 'flymake-go-staticcheck)
+  (require 'go-gopath)
+  (add-hook 'go-mode-hook #'flymake-go-staticcheck-enable)
+  (add-hook 'go-mode-hook #'flymake-mode)
   (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
   (go-guru-hl-identifier-mode)
   (go-eldoc-setup))
 
 ;; flymake
 (use-package flymake
+  :defer t
   :diminish flymake-mode)
+
+;; flymake-go-staticcheck
+(use-package flymake-go-staticcheck
+  :defer 10
+  :diminish flymake-go-staticcheck-mode)
 
 ;;;; ;; focus
 ;;;; (use-package focus
@@ -475,7 +497,7 @@
 
 ;; protobuf
 (use-package protobuf-mode
-  :defer 10
+  :defer t
   :config
   (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
   :init
@@ -489,7 +511,7 @@
 
 ;; tickscripts
 (use-package tickscript-mode
-  :defer 10)
+  :defer t)
 
 ;; dockerfile
 (use-package dockerfile-mode
@@ -500,18 +522,97 @@
 ;; json
 (use-package json-mode
   :defer 10
+  :config
+  (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+  (require 'flycheck-demjsonlint)
   :mode "\\.json\\'"
   :hook (before-save . my/json-mode-before-save-hook)
-  :preface
-  (defun my/json-mode-before-save-hook ()
-    (when (eq major-mode 'json-mode)
-      (json-pretty-print-buffer))))
+  :init
+  (setq json-reformat:indent-width 4))
+;;  :preface
+;;  (defun my/json-mode-before-save-hook ()
+;;    (when (eq major-mode 'json-mode)
+;;      (json-pretty-print-buffer))))
 
 ;; groovy (Jenkinsfile)
 (use-package groovy-mode
-  :defer 10
+  :defer t
+  :preface
+  (defun enable-groovy-mode()
+    (when (string-match "\\(Jenkinsfile\\)" (buffer-name))
+      (groovy-mode)))
   :init
-  (setq groovy-indent-offset 2))
+  ;; (add-to-list 'auto-mode-alist '("\\(/\\|\\`\\)Jenkinsfile" . groovy-mode))
+  (setq groovy-indent-offset 2
+        indent-tabs-mode nil)
+  :config
+  (add-to-list 'auto-mode-alist '("\\(Jenkinsfile\\|Jenkinsfile\\.*\\)" . groovy-mode)))
+
+;; kotlin
+(use-package kotlin-mode
+  :defer t
+  :config
+  (autoload 'kotlin-mode "kotlin-mode" "Kotlin Mode." t)
+  (add-to-list 'auto-mode-alist '("\\.kt$" . kotlin-mode)))
+
+(use-package flycheck-kotlin
+  :defer t
+  :config
+  (add-hook 'kotlin-mode-hook 'flycheck-mode))
+
+;; shell
+(use-package shell
+  :defer 10
+  :config
+  (add-to-list 'auto-mode-alist '("\\.env" . sh-mode))
+  (add-hook 'sh-mode-hook (lambda ()
+                            (setq sh-basic-offset 2))))
+
+;; pivotal tracker
+(use-package org-pivotal
+  :init
+  (setq org-pivotal-api-token "1061a611c443567027aee2b9b95d2dcf")
+  :config
+  (add-hook 'org-mode-hook 'org-pivotal-mode))
+
+;; dumb-jump
+(use-package dumb-jump
+  :defer 10
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g b" . dumb-jump-go-back)
+         ("M-g j" . dumb-jump-go)
+         ("M-g i" . dumb-jump-go-prompt)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window))
+  :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+  :ensure)
+
+;; octave mode
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+
+;; terraform
+;; (use-package company-terraform
+;;  :after terraform)
+;; (use-package terraform
+;;  :defer 10)
+
+;;;; test section
+;;;; (require 'magit-gh-pulls)
+;;;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+;;
+
+;; java
+;; (use-package lsp-java
+;;   :defer t
+;;   :init
+;;   (setq c-basic-offset 4)
+;;   :config
+;;   (add-hook 'java-mode-hook #'lsp))
+
+;; dotenv
+(use-package dotenv-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.env$" . dotenv-mode)))
 
 ;; hook for all programming mode
 (defun my-common-prog-settings()
@@ -530,8 +631,8 @@
   (prettify-symbols-mode +1)
   (rainbow-delimiters-mode +1)
   ;; (setq-default indent-tabs-mode nil)                 ;; use spaces, not tabs
-  (setq-default indent-tabs-mode t)                      ;; use tabs, not spaces
-  (setq-default tab-width 8)
+  ;; (setq-default indent-tabs-mode t)                   ;; use tabs, not spaces
+  ;; (setq-default tab-width 8)
 
   (setq show-paren-style 'parenthesis)
   (setq vc-svn-diff-switches '"-u")
@@ -541,7 +642,7 @@
   (whitespace-mode +1)
   (font-lock-add-keywords nil
                           '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|HACK\\):" 1 font-lock-warning-face t)))
-
+  (counsel-gtags-mode)
   ;; (add-hook 'before-save-hook 'delete-trailing-whitespace
   ;; (git-gutter-mode)
   ;; (setq tab-always-indent 'complete)
@@ -560,32 +661,10 @@
        (add-hook mode-hook 'my-common-prog-settings))
       '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
 			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode
-			   makefile-mode-hook))
+			   makefile-mode-hook dockerfile-mode dotenv-mode))
 
 (require 'my-sandboxes)
 
-;; kotlin
-(autoload 'kotlin-mode "kotlin-mode" "Kotlin Mode." t)
-(add-to-list 'auto-mode-alist '("\\.kt$" . kotlin-mode))
-(use-package flycheck-kotlin
-  :config
-  (add-hook 'kotlin-mode-hook 'flycheck-mode))
-
-;; shell
-(add-hook 'sh-mode-hook (lambda ()
-                          (setq sh-basic-offset 8
-                                sh-indentation 8)))
-
-;; terraform
-;; (use-package company-terraform
-;;  :after terraform)
-;; (use-package terraform
-;;  :defer 10)
-
-;;;; test section
-;;;; (require 'magit-gh-pulls)
-;;;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
-;;
 
 (provide 'my-devel)
 ;;; my-devel.el ends here

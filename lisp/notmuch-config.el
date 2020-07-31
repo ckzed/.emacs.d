@@ -11,6 +11,7 @@
         notmuch-hello-logo nil
         notmuch-saved-searches
         '((:name "to me" :query "(to:chirag OR cc:chirag) AND tag:unread" :key "m")
+          (:name "imp"   :query "tag:important AND tag:unread"            :key "i")
           (:name "new"   :query "tag:unread"                              :key "u")
           (:name "flagged" :query "tag:flagged"                           :key "f")
           (:name "today" :query "date:today..now"                         :key "t")
@@ -26,11 +27,11 @@
 ;;	  (:name "pivotal" :query "tag:pivotal")
 ;;	  (:name "adp" :query "tag:adp")
 ;;        (:name "omniwifi" :query "tag:omniwifi"                         :key "o")
-          (:name "later" :query "tag:later"                               :key "L")
+          (:name "later"           :query "tag:later"                     :key "L")
           (:name "sent this week"  :query "tag:sent AND date:sun..now")
           (:name "sent last week"  :query "tag:sent AND date:last_week..sat")
-          (:name "all"      :query "*")
-          (:name "all sent" :query "tag:sent OR tag:replied"))
+          (:name "all"             :query "*")
+          (:name "all sent"        :query "tag:sent OR tag:replied"))
         notmuch-search-result-format
         '(("date"    . "%12s ")
           ("count"   . "%6s ")
@@ -38,9 +39,10 @@
           ("subject" . "%s ")
           ("tags"    . "(%s)"))
         notmuch-search-line-faces
-        '(("unread"  . (:foreground "green"))
-          ("deleted" . (:foreground "red"))
-          ("flagged" . (:foreground "orange")))
+        '(("unread"  .   (:foreground "green"))
+          ("deleted" .   (:foreground "red"))
+          ("important" . (:foreground "lightblue"))
+          ("flagged" .   (:foreground "orange")))
 	notmuch-address-command 'internal)
 
   ;; spam
