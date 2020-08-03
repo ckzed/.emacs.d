@@ -12,7 +12,6 @@
 	recentf-max-saved-items 200)
   :config
   (add-to-list 'recentf-exclude (expand-file-name ".*" my-tmp-dir))
-  (add-to-list 'recentf-exclude (expand-file-name ".*" org-directory))
   (add-to-list 'recentf-exclude (expand-file-name "elpa/.*" my-emacs-dir))
   (add-to-list 'recentf-exclude (expand-file-name "~/.type-break"))
   (add-to-list 'recentf-exclude (expand-file-name "~/#.type-break#"))
