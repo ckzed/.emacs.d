@@ -11,16 +11,6 @@
   :config
   (cscope-setup))
 
-(use-package counsel-gtags
-  :defer t
-  :diminish counsel-gtags-mode
-  :config
-  (with-eval-after-load 'counsel-gtags
-    (define-key counsel-gtags-mode-map (kbd "M-t") 'counsel-gtags-find-definition)
-    (define-key counsel-gtags-mode-map (kbd "M-r") 'counsel-gtags-find-reference)
-    (define-key counsel-gtags-mode-map (kbd "M-s") 'counsel-gtags-find-symbol)
-    (define-key counsel-gtags-mode-map (kbd "M-,") 'counsel-gtags-go-backward)))
-
 ;; highlight uncommitted changes
 (use-package diff-hl
   :defer 10
@@ -447,20 +437,20 @@
 
 ;; go lang
 (use-package go-mode
-  :init
-  (setq gofmt-command "goimports")
-  ;; (setq c-basic-offset 8)
-  (set (make-local-variable 'company-backends) '(company-go))
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "GOPATH"))
+  :ensure t
   :bind
   ("C-c m" . gofmt)
   ("C-c C-." . godef-jump)
   ("C-c C-r" . go-remove-unused-imports)
   ("C-c i" . go-goto-imports)
-  ;;  ("M-/" . company-go)
+  :init
+  (setq gofmt-command "goimports")
+  (set (make-local-variable 'company-backends) '(company-go))
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "GOPATH"))
+  (add-to-list 'exec-path (concat (file-name-as-directory (getenv "GOPATH")) "bin") t)
   :config
   (require 'go-guru)
   (require 'go-flymake)
@@ -468,9 +458,14 @@
   (require 'company-go)
   (require 'flymake-go-staticcheck)
   (require 'go-gopath)
+  (local-key-binding (kbd "M-/") 'company-go)
+  (add-hook 'go-mode-hook 'company-mode)
+  (add-to-list 'company-backends 'company-go)
   (add-hook 'go-mode-hook #'flymake-go-staticcheck-enable)
   (add-hook 'go-mode-hook #'flymake-mode)
+  (add-hook 'before-save-hook 'gofmt-before-save)
   (add-to-list 'auto-mode-alist '("\\.go$" . go-mode))
+  (add-hook 'go-mode-hook 'go-eldoc-setup)
   (go-guru-hl-identifier-mode)
   (go-eldoc-setup))
 
@@ -591,10 +586,13 @@
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
 ;; terraform
-;; (use-package company-terraform
-;;  :after terraform)
-;; (use-package terraform
-;;  :defer 10)
+(use-package company-terraform
+  :after terraform-mode)
+(use-package terraform-mode
+  :defer 10
+  :init
+  :config
+  (terraform-format-on-save-mode))
 
 ;;;; test section
 ;;;; (require 'magit-gh-pulls)
@@ -642,7 +640,6 @@
   (whitespace-mode +1)
   (font-lock-add-keywords nil
                           '(("\\<\\(FIX\\|FIXME\\|TODO\\|BUG\\|HACK\\):" 1 font-lock-warning-face t)))
-  (counsel-gtags-mode)
   ;; (add-hook 'before-save-hook 'delete-trailing-whitespace
   ;; (git-gutter-mode)
   ;; (setq tab-always-indent 'complete)
@@ -661,7 +658,8 @@
        (add-hook mode-hook 'my-common-prog-settings))
       '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
 			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode
-			   makefile-mode-hook dockerfile-mode dotenv-mode))
+			   makefile-mode-hook dockerfile-mode dotenv-mode
+                           go-mode-hook))
 
 (require 'my-sandboxes)
 
