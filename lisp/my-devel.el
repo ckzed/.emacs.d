@@ -446,7 +446,6 @@
   :init
   (setq gofmt-command "goimports")
   (set (make-local-variable 'company-backends) '(company-go))
-  (add-hook 'before-save-hook 'gofmt-before-save)
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "GOPATH"))
@@ -658,8 +657,7 @@
        (add-hook mode-hook 'my-common-prog-settings))
       '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
 			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode
-			   makefile-mode-hook dockerfile-mode dotenv-mode
-                           go-mode-hook))
+			   makefile-mode-hook dockerfile-mode dotenv-mode))
 
 (require 'my-sandboxes)
 

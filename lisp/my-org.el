@@ -33,12 +33,10 @@
         org-log-done t
 	org-refile-targets '((expand-file-name "someday.org" my-org-dir) :level . 1)
         org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+        '((sequence "TODO(t)" "NEXT(n)" "UNDER REVIEW(r)" "|" "DONE(d)")
           (sequence "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c)"))
         org-todo-keyword-faces
-        '(("NEXT" :foreground "blue" :weight bold)
-          ("WAITING" :foreground "orange" :weight bold)
-          ("HOLD" :foreground "magenta" :weight bold)
+        '(("UNDER REVIEW" :foreground "orange" :weight bold :border 1)
           ("CANCELLED" :foreground "brown" :weight bold))
 	; org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
 					; org-log-done 'time
