@@ -45,6 +45,7 @@
     git-commit
     go-add-tags
     go-eldoc
+    golint
     ;; go-flycheck
     ;; go-flymake
     go-guru
