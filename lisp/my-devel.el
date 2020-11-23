@@ -590,8 +590,8 @@
 (use-package terraform-mode
   :defer 10
   :init
-  :config
-  (terraform-format-on-save-mode))
+  (add-to-list 'auto-mode-alist '("\\.tf$" . terraform-mode))
+  (add-hook 'terraform-mode-hook #'terraform-format-on-save-mode))
 
 ;;;; test section
 ;;;; (require 'magit-gh-pulls)
@@ -610,6 +610,14 @@
 (use-package dotenv-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.env$" . dotenv-mode)))
+
+;; org-jira
+(use-package org-jira
+  :bind (("C-c jp" . org-jira-get-projects)
+         ("C-c jb" . org-jira-browse-issue))
+  :init
+  (setq org-jira-working-dir "~/.org-jira")
+  (setq jiralib-url "https://zededa.atlassian.net"))
 
 ;; hook for all programming mode
 (defun my-common-prog-settings()

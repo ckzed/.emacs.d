@@ -70,6 +70,7 @@
     offlineimap
     org
     org-bullets
+    org-jira
     osx-location
     paradox
     projectile

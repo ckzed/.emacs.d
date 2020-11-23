@@ -9,6 +9,20 @@
 (defvar my-default-todo (expand-file-name "todo.org" my-org-dir)
   "Default todo list.")
 
+(with-eval-after-load "org-faces"
+  (defface org-agenda-deadline-overdue
+    '((t (:foreground "cyan")))
+    "Face used to highlight tasks whose due date is in the past.")
+  (defface org-agenda-deadline-today
+    '((t (:weight bold :foreground "#4F4A3D" :background "#FFFFCC")))
+    "Face used to highlight tasks whose due date is today.")
+  (defface org-agenda-deadline-tomorrow
+    '((t (:foreground "#40A80B")))
+    "Face used to highlight tasks whose due date is tomorrow.")
+  (defface org-agenda-deadline-future
+    '((t (:foreground "#40A80B")))
+    "Face used to highlight tasks whose due date is for later."))
+
 (global-set-key (kbd "C-c t") (lambda() (interactive)(find-file (expand-file-name "todo.org" my-org-dir))))
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
