@@ -36,7 +36,6 @@
 (setq custom-theme-directory
       (concat my-emacs-dir "themes"))
  (load-theme 'black t)
-;; (load-theme 'basic t)
 
 (require 'my-env)
 (require 'my-keybindings)
@@ -44,6 +43,7 @@
 (require 'my-devel)
 (require 'my-org)
 (require 'my-email-setup)
+(require 'my-slack)
 
 ;;; Elapsed time
 (add-hook 'after-init-hook

@@ -10,6 +10,7 @@
     ag
     all-the-icons
     anaconda-mode
+    async
     auto-compile
     avy
     beacon

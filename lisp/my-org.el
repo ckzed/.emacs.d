@@ -4,23 +4,18 @@
 ;; Org setup
 
 ;;; Code:
-(defvar my-org-dir (expand-file-name "~/Dropbox/Agenda/org/zededa")
-  "Directory for org files.")
-(defvar my-default-todo (expand-file-name "todo.org" my-org-dir)
-  "Default todo list.")
+(defvar my-org-dir (expand-file-name "~/Dropbox/Agenda/org/zededa") "Directory for org files.")
+(defvar my-default-todo (expand-file-name "todo.org" my-org-dir) "Default todo list.")
+(defvar work-log (expand-file-name "work.org" my-org-dir) "Work log.")
 
 (with-eval-after-load "org-faces"
-  (defface org-agenda-deadline-overdue
-    '((t (:foreground "cyan")))
+  (defface org-agenda-deadline-overdue '((t (:foreground "cyan")))
     "Face used to highlight tasks whose due date is in the past.")
-  (defface org-agenda-deadline-today
-    '((t (:weight bold :foreground "#4F4A3D" :background "#FFFFCC")))
+  (defface org-agenda-deadline-today '((t (:weight bold :foreground "#4F4A3D" :background "#FFFFCC")))
     "Face used to highlight tasks whose due date is today.")
-  (defface org-agenda-deadline-tomorrow
-    '((t (:foreground "#40A80B")))
+  (defface org-agenda-deadline-tomorrow '((t (:foreground "#40A80B")))
     "Face used to highlight tasks whose due date is tomorrow.")
-  (defface org-agenda-deadline-future
-    '((t (:foreground "#40A80B")))
+  (defface org-agenda-deadline-future '((t (:foreground "#40A80B")))
     "Face used to highlight tasks whose due date is for later."))
 
 (global-set-key (kbd "C-c t") (lambda() (interactive)(find-file (expand-file-name "todo.org" my-org-dir))))
@@ -31,53 +26,31 @@
 (use-package org
   :defer 5
   :ensure t
-  :bind
-  ("C-c f" . org-toggle-todo-and-fold)
   :init
   (setq org-agenda-files (list my-default-todo
                                (expand-file-name "schedule.org" my-org-dir)
                                (expand-file-name "pivotal.org" my-org-dir)
                                (expand-file-name "sprint.org" my-org-dir))
         org-agenda-include-diary t
-        org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
-                                   ;; Indent todo items by level to show nesting
-                                   (todo . " %i %-12:c%l")
-                                   (tags . " %i %-12:c")
-                                   (search . " %i %-12:c"))
+        ;; org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
+        ;;                           (todo . " %i %-12:c%l")
+        ;; (tags . " %i %-12:c")
+        ;;                           (search . " %i %-12:c"))
+
         org-log-done t
-	org-refile-targets '((expand-file-name "someday.org" my-org-dir) :level . 1)
         org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "UNDER REVIEW(r)" "|" "DONE(d)")
           (sequence "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c)"))
         org-todo-keyword-faces
         '(("UNDER REVIEW" :foreground "orange" :weight bold :border 1)
           ("CANCELLED" :foreground "brown" :weight bold))
-	; org-columns-default-format "%25ITEM %TODO %3PRIORITY %TIMESTAMP"
-					; org-log-done 'time
-        ;; org-agenda-window-setup (quote current-window)
-					; org-deadline-warning-days 7
-	;; org-agenda-start-day "-1d"	; start from yesterday
-	;; org-agenda-start-on-weekday nil
-	;; org-agenda-span 'week
-        org-agenda-skip-scheduled-if-deadline-is-shown t
-        ; org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled)
-        ; org-agenda-todo-ignore-deadlines (quote all)
-        ; org-agenda-todo-ignore-scheduled (quote all)
-        ; org-agenda-sorting-strategy        (quote         ((agenda deadline-up priority-down)          (todo priority-down category-keep)          (tags priority-down category-keep)          (search category-keep)))
         org-ellipsis "⤵")
 
-  (setq org-agenda-custom-commands
-        '(("c" "Simple agenda view"
-           ((tags "PRIORITY=\"A\""
-                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                   (org-agenda-overriding-header "High-priority unfinished tasks:")))
-            (agenda "")
-            (alltodo ""))
-           ((org-agenda-compact-blocks t))))
-        org-M-RET-my-split-line nil)
-
   ;; Capture templates
-  (setq org-capture-templates '(("t" "TODO" entry
+  (setq org-capture-templates '(
+                                ("w" "Work log" entry
+                                 (file+headline work-log "Work") "* %<%Y-%m-%d %a %H:%M> %? %^G")
+                                ("t" "TODO" entry
                                  (file+headline my-default-todo "Tasks") "* TODO %? %^G \n  %U" :empty-lines 1)
                                 ("s" "Scheduled TODO" entry
                                  (file+headline my-default-todo "Tasks") "* TODO %? %^G \nSCHEDULED: %^t\n  %U" :empty-lines 1)
@@ -96,22 +69,6 @@
                                 ("j" "Journal" entry
                                  (file+datetree "~/Dropbox/Agenda/org/journal.org")
                                  "* %? %^G\nEntered on %U\n")))
-
-;;        org-capture-templates '(("t" "Todo" entry
-;;				 (file+headline my-default-todo "Tasks")
-;;				 "* TODO %i%?")
-;;				("b" "Bugs" entry
-;;				 (file+headline "~/.bugs.org" "Bugs"))
-;;				("T" "Tickler" entry
-;;				 (file+headline "~/.tickler.org" "Tickler")
-;;				 "* %i%? \n %U")
-;;                                ("i" "Ideas" entry
-;;                                 (olp+datetree "~/Dropbox/org/ideas.org")
-;;                                 "* %?\nEntered on %U\n  %i\n  %a" :empty-lines 1)
-;;                                ("j" "Journal" entry
-;;                                 (olp+datetree "~/Dropbox/org/journal.org")
-;;                                 "* %?\nEntered on %U\n  %i\n  %a" :empty-lines 1)))
-
   :config
   (defun jump-to-org-agenda ()
     (interactive)
@@ -155,13 +112,6 @@
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  ;;   (add-to-list 'org-export-latex-classes
-  ;;               '("moderncv"
-  ;;                 "\\documentclass{moderncv}"
-  ;;                 ("\\
-
-  ;; (require 'india-holidays-2018)
-
   (defun my-org-insert-week-template ()
     "Insert org headline template for the week.
 
@@ -220,15 +170,6 @@ Example:
   (defun org-bullets-mode-hook ()
     (org-bullets-mode +1)))
 
-;; start org-mode upon start
-;; (org-agenda nil "a")
-
-;; idle-org-agenda
-;; (use-package idle-org-agenda
-;;     :after org-agenda
-;;     :ensure t
-;;     :config (idle-org-agenda-mode))
-
 ;; org-gcal
 (use-package org-gcal
   :defer 3
@@ -243,19 +184,7 @@ Example:
   (setq alert-default-style 'osx-notifier
 	org-alert-notification-title "Org Scheduler"))
 
-;; (use-package org-roam
-;;   :hook
-;;   (after-init . org-roam-mode)
-;;   :custom
-;;   (org-roam-directory "~/Dropbox/org/")
-;;   :bind (:map org-roam-mode-map
-;;               (("C-c o l" . org-roam)
-;;                ("C-c o f" . org-roam-find-file)
-;;                ("C-c o g" . org-roam-show-graph))
-;;               :map org-mode-map
-;;               (("C-c o i" . org-roam-insert))))
-
-(require 'india-holidays-2020)
+(require 'india-holidays-2021)
 
 (provide 'my-org)
 ;;; my-org.el ends here
