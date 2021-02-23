@@ -29,8 +29,14 @@
   :init
   (setq org-agenda-files (list my-default-todo
                                (expand-file-name "schedule.org" my-org-dir)
+                               (expand-file-name "someday.org" my-org-dir)
                                (expand-file-name "pivotal.org" my-org-dir)
                                (expand-file-name "sprint.org" my-org-dir))
+
+        org-refile-targets '((org-agenda-files :maxlevel . 3))
+        org-outline-path-complete-in-steps nil
+        org-refile-use-outline-path t
+        org-refile-allow-creating-parent-nodes 'confirm
         org-agenda-include-diary t
         ;; org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
         ;;                           (todo . " %i %-12:c%l")
