@@ -229,19 +229,19 @@
                 ("U" . magit-stash-pop)
                 ("Z" . forge-create-pullreq))))
 
-;; magithub
-(use-package magithub
-  :defer t
-  :after magit
-  :config
-  (magithub-feature-autoinject t))
+;; ;; magithub
+;; (use-package magithub
+;;   :defer t
+;;   :after magit
+;;   :config
+;;   (magithub-feature-autoinject t))
 
-;; magit-gh-pulls
-(use-package magit-gh-pulls
-  :defer t
-  :after magit
-  :config
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+;; ;; magit-gh-pulls
+;; (use-package magit-gh-pulls
+;;   :defer t
+;;   :after magit
+;;   :config
+;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
 ;;; last change
 (use-package goto-last-change
@@ -439,10 +439,7 @@
 (use-package go-mode
   :ensure t
   :bind
-  ("C-c m" . gofmt)
   ("C-c C-." . godef-jump)
-  ("C-c C-r" . go-remove-unused-imports)
-  ("C-c i" . go-goto-imports)
   :init
   (setq gofmt-command "goimports")
   (set (make-local-variable 'company-backends) '(company-go))
@@ -665,7 +662,8 @@
        (add-hook mode-hook 'my-common-prog-settings))
       '(c-mode-common-hook python-mode-hook js3-mode-hook java-mode-hook
 			   sh-mode-hook go-mode-hook json-mode-hook yaml-mode
-			   makefile-mode-hook dockerfile-mode dotenv-mode))
+			   makefile-mode-hook dockerfile-mode dotenv-mode
+                           terraform-mode groovy-mode yaml-mode))
 
 (require 'my-sandboxes)
 

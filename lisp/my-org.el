@@ -7,6 +7,8 @@
 (defvar my-org-dir (expand-file-name "~/Dropbox/Agenda/org/zededa") "Directory for org files.")
 (defvar my-default-todo (expand-file-name "todo.org" my-org-dir) "Default todo list.")
 (defvar work-log (expand-file-name "work.org" my-org-dir) "Work log.")
+(defvar jira-dir (expand-file-name "~/.org-jira") "Directory for Jira.")
+(defvar sre-tickets (expand-file-name "SRE.org" jira-dir) "SRE Jira Tickets.")
 
 (with-eval-after-load "org-faces"
   (defface org-agenda-deadline-overdue '((t (:foreground "cyan")))
@@ -27,7 +29,7 @@
   :defer 5
   :ensure t
   :init
-  (setq org-agenda-files (list my-default-todo
+  (setq org-agenda-files (list my-default-todo sre-tickets
                                (expand-file-name "schedule.org" my-org-dir)
                                (expand-file-name "someday.org" my-org-dir)
                                (expand-file-name "pivotal.org" my-org-dir)
@@ -38,6 +40,10 @@
         org-refile-use-outline-path t
         org-refile-allow-creating-parent-nodes 'confirm
         org-agenda-include-diary t
+        org-agenda-start-day "-1d"  ; start from yesterday
+        org-agenda-start-on-weekday nil
+        org-agenda-span 'week
+        org-agenda-skip-scheduled-if-deadline-is-shown t
         ;; org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
         ;;                           (todo . " %i %-12:c%l")
         ;; (tags . " %i %-12:c")
@@ -45,8 +51,8 @@
 
         org-log-done t
         org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "UNDER REVIEW(r)" "|" "DONE(d)")
-          (sequence "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c)"))
+        '((sequence "TODO(t)" "NEXT(n)" "UNDER REVIEW(r)" "DONE(d)")
+          (sequence "WAITING(w@)" "HOLD(h@)" "CANCELLED(c)"))
         org-todo-keyword-faces
         '(("UNDER REVIEW" :foreground "orange" :weight bold :border 1)
           ("CANCELLED" :foreground "brown" :weight bold))
@@ -55,7 +61,7 @@
   ;; Capture templates
   (setq org-capture-templates '(
                                 ("w" "Work log" entry
-                                 (file+headline work-log "Work") "* %<%Y-%m-%d %a %H:%M> %? %^G")
+                                 (file+olp+datetree work-log) "* %<%Y-%m-%d %a %H:%M> %?" :tree-type week :empty-lines 1)
                                 ("t" "TODO" entry
                                  (file+headline my-default-todo "Tasks") "* TODO %? %^G \n  %U" :empty-lines 1)
                                 ("s" "Scheduled TODO" entry

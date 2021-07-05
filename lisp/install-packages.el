@@ -61,8 +61,7 @@
     js3-mode
     json-mode
     magit
-    magithub
-    magit-gh-pulls
+    ;; magithub ; commented out on Feb 26, 2021
     markdown-mode
     multi-term
     mustache-mode
@@ -100,7 +99,7 @@
     whitespace-cleanup-mode
     win-switch
     writegood-mode
-    xcscope
+    ;; xcscope  ; commented out on Feb 26, 2021
     xkcd
     yaml-mode
     ))
