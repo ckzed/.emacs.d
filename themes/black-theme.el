@@ -31,8 +31,9 @@
       (cursor                 "#ffff00")
       (cyan                   "#00ffff")
       (dgreen                 "#00aa00")
-      ;; (func                   "#7ffcd4")
-      ;; (func                   "#ffa565")
+      ;; (func                "#7ffcd4")
+      ;; (func                "#ffa565")
+      (func                   "pale green")
       (green                  "#00ff00")
       (indianred              "#cd5c5c")
       (keyword                "#27c7ff")
@@ -110,7 +111,7 @@
    `(font-lock-comment-face ((,class (:foreground ,comment))))
    `(font-lock-constant-face ((,class (:foreground ,const))))
    `(font-lock-doc-face ((,class (:foreground ,comment))))
-   `(font-lock-function-name-face ((,class (:foreground ,zededa-sunrise))))
+   `(font-lock-function-name-face ((,class (:foreground ,func))))
    `(font-lock-keyword-face ((,class (:bold ,class :foreground ,keyword))))
    `(font-lock-negation-char-face ((,class (:foreground ,const))))
    `(font-lock-reference-face ((,class (:foreground ,const))))
@@ -269,7 +270,8 @@
    `(web-mode-keyword-face ((,class (:foreground ,keyword))))
    `(web-mode-string-face ((,class (:foreground ,str))))
    `(web-mode-type-face ((,class (:inherit ,font-lock-type-face))))
-   `(web-mode-warning-face ((,class (:inherit ,font-lock-warning-face))))))
+   `(web-mode-warning-face ((,class (:inherit ,font-lock-warning-face))))
+   '(which-func ((t (:foreground ,func))))))
 
 ;;;###autoload
 (when load-file-name
@@ -277,7 +279,6 @@
                (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'black)
-
 
 ;; Local Variables:
 ;; no-byte-compile: t

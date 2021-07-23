@@ -2,15 +2,6 @@
 ;;; Commentary:
 
 ;;; Code:
-(use-package xcscope
-  :defer t
-  :init
-  (setq cscope-option-do-not-update-database t)
-  (setq cscope-close-window-after-select t)
-  (setq cscope-option-use-inverted-index t)
-  :config
-  (cscope-setup))
-
 ;; highlight uncommitted changes
 (use-package diff-hl
   :defer 10
@@ -626,6 +617,7 @@
   (flycheck-mode)
   (flyspell-prog-mode)
   (projectile-mode +1)
+  ;; (which-function-mode +1)
   ;; (focus-mode +1)
   ;; (function-args-mode +1)
   ;; (local-set-key (kbd "RET") 'newline-and-indent)

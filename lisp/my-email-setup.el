@@ -18,8 +18,8 @@
                                 (flycheck-mode +1)))
 
 ;; mail variables
-(require 'smtpmail-async)
-;; (require 'smtpmail)
+;; (require 'smtpmail-async)
+(require 'smtpmail)
 (setq mm-text-html-renderer 'shr    	;; use shr to view html mail
       message-fill-column 72        	;; wrap text at column 72
       message-kill-buffer-on-exit t 	;; kill buffer after sending mails
@@ -29,8 +29,8 @@
       message-auto-save-directory "~/.drafts"
       message-sendmail-f-is-evil t
       message-sendmail-envelope-from 'header
-      message-send-mail-function 'async-smtpmail-send-it
-      send-mail-function 'async-smtpmail-send-it
+      message-send-mail-function 'smtpmail-send-it
+      send-mail-function 'smtpmail-send-it
       smtpmail-stream-type 'ssl
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 465

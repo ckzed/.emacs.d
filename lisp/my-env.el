@@ -85,29 +85,12 @@
   :config
   (avy-setup-default))
 
-;; Draw a tail in the trail of typed characters; disabled as of now;
-;; to enable it, put the following in the :init section
-;;  (highlight-tail-mode)
-;; (use-package highlight-tail
-;;   :diminish highlight-tail-mode
-;;   :config
-;;   (setq highlight-tail-steps 14
-;; 	highlight-tail-timer 1
-;; 	highlight-colors '(("black" . 0 )
-;;                            ("#bc2525" . 25)
-;;                            ("black" . 66))
-;;         highlight-tail-posterior-type 'const))
-
 (use-package hl-line
   :defer t
   :config
   (set-face-background 'hl-line "#3e4446")
   (set-face-background 'highlight nil)
   (global-hl-line-mode +1))
-
-(use-package switch-window
-  :bind (("C-x o" . switch-window)
-         ("C-x w" . switch-window-then-swap-buffer)))
 
 (use-package expand-region
   :defer t
@@ -124,7 +107,6 @@
   :config
   (which-key-mode +1))
 
-;; rainbow-mode to display colors as the background of the hex code
 (use-package rainbow-mode
   :diminish rainbow-mode
   :defer t
@@ -137,7 +119,6 @@
   (dolist (hook '(css-mode-hook html-mode-hook sass-mode-hook))
     (add-hook hook #'rainbow-mode)))
 
-;; swiper
 (use-package swiper
   :ensure t
   :defer t
@@ -160,7 +141,6 @@
     (recenter))
   (defadvice swiper-recenter (after swiper)))
 
-;; beacon
 (use-package beacon
   :defer t
   :diminish beacon-mode
@@ -232,23 +212,7 @@
   (global-set-key (kbd "C-c C-p") 'company-select-previous)
   (defadvice company-pseudo-tooltip-unless-just-one-frontend
     (around only-show-tooltip-when-invoked activate)
-    (when (company-explicit-action-p) ad-do-it))
-  ;; company colors with dark background
-;;  (require 'color)
-;;  (let ((bg (face-attribute 'default :background)))
-;;    (custom-set-faces
-;;     `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-;;     `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-;;     `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-;;     `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-;;     `(company-tooltip-common ((t (:inherit font-lock-constant-face))))))
-  )
-
-;; (use-package company-quickhelp
-;;  :after company
-;;  :init
-;;  (setq company-quickhelp-
-;;  '(define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin))
+    (when (company-explicit-action-p) ad-do-it)))
 
 ;; savehist
 (use-package savehist
@@ -270,20 +234,6 @@
   :config
   (sml/setup)
   (sml/apply-theme 'respectful))
-
-;; Take a break
-;; (use-package type-break
-;;   :defer 5
-;;   :bind
-;;   ("<f12>" . type-break)
-;;   :config
-;;   (type-break-mode))
-
-;; Screens
-;; (use-package escreen
-;;  :config
-;;  (escreen-install)
-;;  (escreen-number-mode))
 
 ;; ibuffer
 (use-package ibuffer
@@ -359,48 +309,6 @@
   (dired-ls-F-marks-symlinks nil)
   (dired-recursive-copies 'always))
 
-;; engine
-(use-package engine-mode
-  :defer t
-  :init
-  (setq engine/browser-function 'eww-browse-url)
-  :config
-  (engine/set-keymap-prefix (kbd "C-c s"))
-  (defengine amazon
-    "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
-    :keybinding "a")
-
-  (defengine duckduckgo
-    "https://duckduckgo.com/?q=%s"
-    :keybinding "d")
-
-  (defengine github
-    "https://github.com/search?ref=simplesearch&q=%s"
-    :keybinding "g")
-
-  (defengine google-images
-    "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
-    :keybinding "i")
-
-  (defengine google-maps
-    "http://maps.google.com/maps?q=%s"
-    :keybinding "m"
-    :docstring "Mappin' it up.")
-
-  (defengine stack-overflow
-    "https://stackoverflow.com/search?q=%s"
-    :keybinding "s")
-
-  (defengine youtube
-    "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-    :keybinding "y")
-
-  (defengine wikipedia
-    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-    :keybinding "w"
-    :docstring "Searchin' the wikis.")
-  (engine-mode t))
-
 ;; dashboard
 (use-package dashboard
   :preface
@@ -412,14 +320,15 @@
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
   :init
   ;; (setq dashboard-startup-banner nil)
-  (setq dashboard-items '((projects . 5)
+  (setq dashboard-items '((agenda . 5)
+                          (projects . 5)
                           (recents  . 5)
-                          (agenda . 5)
-                          (bookmarks . 5)
-                          (registers . 5)))
-  (setq dashboard-set-navigator t)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
+                          (bookmarks . 5))
+        dashboard-set-navigator t
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-show-shortcuts nil
+        dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   (add-hook 'after-init-hook 'dashboard-refresh-buffer)
   (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
   :custom
@@ -503,41 +412,6 @@
 ;; tramp
 (use-package tramp
   :defer t)
-
-;; diary
-(require 'calendar)
-(setq view-diary-entries-initially t
-      mark-diary-entries-in-calendar t
-      number-of-diary-entries 7)
-(add-hook 'diary-display-hook 'fancy-diary-display)
-(add-hook 'today-visible-calendar-hook 'calendar-mark-today)
-
-(add-hook 'fancy-diary-display-mode-hook
-          '(lambda ()
-             (alt-clean-equal-signs)))
-
-(defun alt-clean-equal-signs ()
-  "This function makes lines of = signs invisible."
-  (goto-char (point-min))
-  (let ((state buffer-read-only))
-    (when state (setq buffer-read-only nil))
-    (while (not (eobp))
-      (search-forward-regexp "^=+$" nil 'move)
-      (add-text-properties (match-beginning 0)
-                           (match-end 0)
-                           '(invisible t)))
-    (when state (setq buffer-read-only t))))
-
-;; elscreen
-;; (use-package elscreen
-;;   :defer 3
-;;   :init
-;;   (setq elscreen-prefix-key "\C-\\"))
-
-;; zone-matrix
-;; (use-package zone
-;;  :config
-;;  (zone-when-idle 20))
 
 (provide 'my-env)
 ;;; my-env.el ends here
